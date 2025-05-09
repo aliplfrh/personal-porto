@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, User, Tag } from 'lucide-react';
+import { X, Calendar, User, Tag, ExternalLink } from 'lucide-react';
 import { Project } from '../types';
 
 interface ProjectModalProps {
@@ -45,12 +45,25 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
             <div className="p-6">
               <div className="mb-8">
                 {project.category === 'video' ? (
-                  <div className="rounded-lg overflow-hidden bg-dark-surface">
-                    <img
-                      src={project.thumbnailImage || project.thumbnail}
-                      alt={`${project.title} thumbnail`}
-                      className="w-full h-auto"
-                    />
+                  <div className="space-y-4">
+                    <div className="rounded-lg overflow-hidden bg-dark-surface">
+                      <img
+                        src={project.thumbnailImage || project.thumbnail}
+                        alt={`${project.title} thumbnail`}
+                        className="w-full h-auto"
+                      />
+                    </div>
+                    {project.streamableId && (
+                      <a
+                        href={`https://streamable.com/${project.streamableId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-accent-red hover:text-accent-red-light transition-colors"
+                      >
+                        <span className="mr-2">Preview</span>
+                        <ExternalLink size={16} />
+                      </a>
+                    )}
                   </div>
                 ) : (
                   project.images && (
