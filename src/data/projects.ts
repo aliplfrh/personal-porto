@@ -6,7 +6,7 @@ export const projects: Project[] = [
     title: 'MOTION - Brainstorming ',
     category: 'video',
     thumbnail: 'https://i.imgur.com/0RDmipm.png',
-    thumbnailImage: 'https://i.imgur.com/4mq0WUw.jpeg',
+    thumbnailImage: 'https://i.imgur.com/0RDmipm.png',
     description: 'A educational reels about brain storming in film making.',
     tags: ['Education', 'Editing', 'Cinemental', 'Brainstorming', 'Premiere Pro', 'Davinci Resolve'],
     client: 'Nol Derajat Film',
