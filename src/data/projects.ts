@@ -9,7 +9,6 @@ export const projects: Project[] = [
     thumbnailImage: 'https://i.imgur.com/4mq0WUw.jpeg',
     description: 'A educational reels about brain storming in film making.',
     tags: ['Education', 'Editing', 'Cinemental', 'Brainstorming', 'Premiere Pro', 'Davinci Resolve'],
-    streamableId: 'xkyd7a',
     client: 'Nol Derajat Film',
     year: 2025,
     role: 'Video Editor & Colorist'
@@ -37,7 +36,6 @@ export const projects: Project[] = [
     description: 'Short Movie about a man called Andi fighting agaist his panic attack/trauma.',
     tags: ['Short Movie', 'Davinci Resolve', 'Premiere Pro'],
     images: ['https://i.imgur.com/BWNoH46.png'],
-    streamableId: '6nl6ee',
     client: 'Amba Frame',
     year: 2025,
     role: 'Editor & Post-Production Supervisor'
@@ -65,7 +63,6 @@ export const projects: Project[] = [
     thumbnailImage: 'https://i.imgur.com/miA8Dg7.jpeg',
     description: 'Informative news about what happend last month in film makirng scenes.',
     tags: ['Informative', 'Premiere Pro', 'CapCut'],
-    streamableId: '7st673',
     client: 'Nol Derajat Film',
     year: 2025,
     role: 'Video Editor'
@@ -94,7 +91,6 @@ export const projects: Project[] = [
     thumbnailImage: 'https://i.imgur.com/pYkny1n.png',
     description: 'A educational reels about lightning in film making.',
     tags: ['Education', 'Editing', 'Cinemental', 'Lightning', 'Premiere Pro', 'Davinci Resolve'],
-    streamableId: 'tthp5g',
     client: 'Nol Derajat Film',
     year: 2025,
     role: 'Video Editor & Colorist'

@@ -7,9 +7,8 @@ export interface Project {
   tags: string[];
   videoUrl?: string;
   videoType?: 'youtube' | 'vimeo';
-  streamableId?: string;
   images?: string[];
-  thumbnailImage?: string; // Optional thumbnail image for video projects
+  thumbnailImage?: string;
   client?: string;
   year: number;
   role: string;
