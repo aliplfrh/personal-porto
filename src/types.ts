@@ -9,6 +9,7 @@ export interface Project {
   videoType?: 'youtube' | 'vimeo';
   streamableId?: string;
   images?: string[];
+  thumbnailImage?: string; // Optional thumbnail image for video projects
   client?: string;
   year: number;
   role: string;

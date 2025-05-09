@@ -10,38 +10,42 @@ interface ProjectModalProps {
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose }) => {
-  // Prevent clicks inside modal from closing it
   const handleContentClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 
   const renderVideo = () => {
-    if (!project.videoUrl) return null;
+    if (!project.streamableId) return null;
 
-    switch (project.videoType) {
-      case 'youtube':
-        return (
+    return (
+      <div className="space-y-4">
+        <div className="aspect-video rounded-lg overflow-hidden bg-dark-surface">
+          {project.thumbnailImage && (
+            <img
+              src={project.thumbnailImage}
+              alt={`${project.title} thumbnail`}
+              className="w-full h-full object-cover"
+            />
+          )}
           <iframe
-            src={`https://www.youtube.com/embed/${project.videoUrl}`}
+            src={`https://streamable.com/e/${project.streamableId}`}
             className="w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title={project.title}
           />
-        );
-      case 'vimeo':
-        return (
-          <iframe
-            src={`https://player.vimeo.com/video/${project.videoUrl}`}
-            className="w-full h-full"
-            allow="autoplay; fullscreen; picture-in-picture"
-            allowFullScreen
-            title={project.title}
-          />
-        );
-      default:
-        return null;
-    }
+        </div>
+        <a
+          href={`https://streamable.com/${project.streamableId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center text-accent-red hover:text-accent-red-light transition-colors"
+        >
+          <span className="mr-2">Preview</span>
+          <ExternalLink size={16} />
+        </a>
+      </div>
+    );
   };
 
   return (
@@ -61,7 +65,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
             onClick={handleContentClick}
             className="bg-dark-card border border-dark-border rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
           >
-            {/* Close button */}
             <div className="sticky top-0 z-10 bg-dark-card/80 backdrop-blur-sm border-b border-dark-border p-4 flex justify-between items-center">
               <h2 className="text-xl font-bold">{project.title}</h2>
               <button
@@ -74,40 +77,25 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
             </div>
 
             <div className="p-6">
-              {/* Project media */}
               <div className="mb-8">
-                {project.category === 'video' && (
-                  <div className="space-y-4">
-                    <div className="aspect-video rounded-lg overflow-hidden bg-dark-surface">
-                      {renderVideo()}
+                {project.category === 'video' ? (
+                  renderVideo()
+                ) : (
+                  project.images && (
+                    <div className="grid gap-4">
+                      {project.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`${project.title} - Image ${index + 1}`}
+                          className="w-full h-auto rounded-lg"
+                        />
+                      ))}
                     </div>
-                    <a
-                      href={`https://streamable.com/${project.streamableId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-accent-red hover:text-accent-red-light transition-colors"
-                    >
-                      <span className="mr-2">Preview</span>
-                      <ExternalLink size={16} />
-                    </a>
-                  </div>
-                )}
-                
-                {project.category === 'graphic' && project.images && (
-                  <div className="grid gap-4">
-                    {project.images.map((image, index) => (
-                      <img
-                        key={index}
-                        src={image}
-                        alt={`${project.title} - Image ${index + 1}`}
-                        className="w-full h-auto rounded-lg"
-                      />
-                    ))}
-                  </div>
+                  )
                 )}
               </div>
 
-              {/* Project details */}
               <div className="space-y-6">
                 <div>
                   <h3 className="text-lg font-semibold mb-2">About the Project</h3>

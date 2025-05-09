@@ -6,6 +6,7 @@ export const projects: Project[] = [
     title: 'MOTION - Brainstorming ',
     category: 'video',
     thumbnail: 'https://i.imgur.com/0RDmipm.png',
+    thumbnailImage: 'https://i.imgur.com/0RDmipm.png',
     description: 'A educational reels about brain storming in film making.',
     tags: ['Education', 'Editing', 'Cinemental', 'Brainstorming', 'Premiere Pro', 'Davinci Resolve'],
     streamableId: 'xkyd7a',
@@ -32,6 +33,7 @@ export const projects: Project[] = [
     title: "It's Okay Im here",
     category: 'video',
     thumbnail: 'https://i.imgur.com/RuNDHsF.jpeg',
+    thumbnailImage: 'https://i.imgur.com/RuNDHsF.jpeg',
     description: 'Short Movie about a man called Andi fighting agaist his panic attack/trauma.',
     tags: ['Short Movie', 'Davinci Resolve', 'Premiere Pro'],
     images: ['https://i.imgur.com/BWNoH46.png'],
@@ -60,6 +62,7 @@ export const projects: Project[] = [
     title: "What's Up Sineas",
     category: 'video',
     thumbnail: 'https://i.imgur.com/miA8Dg7.jpeg',
+    thumbnailImage: 'https://i.imgur.com/miA8Dg7.jpeg',
     description: 'Informative news about what happend last month in film makirng scenes.',
     tags: ['Informative', 'Premiere Pro', 'CapCut'],
     streamableId: '7st673',
@@ -88,6 +91,7 @@ export const projects: Project[] = [
     title: 'MOTION - Lightning ',
     category: 'video',
     thumbnail: 'https://i.imgur.com/pYkny1n.png',
+    thumbnailImage: 'https://i.imgur.com/pYkny1n.png',
     description: 'A educational reels about lightning in film making.',
     tags: ['Education', 'Editing', 'Cinemental', 'Lightning', 'Premiere Pro', 'Davinci Resolve'],
     streamableId: 'tthp5g',
@@ -95,7 +99,7 @@ export const projects: Project[] = [
     year: 2025,
     role: 'Video Editor & Colorist'
   },
-    {
+  {
     id: 'cue-card',
     title: 'Cue Card Design',
     category: 'graphic',
