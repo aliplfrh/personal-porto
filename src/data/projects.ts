@@ -110,7 +110,7 @@ export const projects: Project[] = [
       'https://i.imgur.com/tuG9pqQ.png',
     ],
     client: 'Nol Derajat Film',
-    year: 2022-2024,
+    year: 2025,
     role: 'Graphic Designer'
   },
 ];
