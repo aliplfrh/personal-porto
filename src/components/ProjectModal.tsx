@@ -19,21 +19,25 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
 
     return (
       <div className="space-y-4">
-        <div className="aspect-video rounded-lg overflow-hidden bg-dark-surface">
+        <div className="rounded-lg overflow-hidden bg-dark-surface">
           {project.thumbnailImage && (
-            <img
-              src={project.thumbnailImage}
-              alt={`${project.title} thumbnail`}
-              className="w-full h-full object-cover"
-            />
+            <div className="w-full">
+              <img
+                src={project.thumbnailImage}
+                alt={`${project.title} thumbnail`}
+                className="w-full h-auto"
+              />
+            </div>
           )}
-          <iframe
-            src={`https://streamable.com/e/${project.streamableId}`}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title={project.title}
-          />
+          <div className="aspect-video">
+            <iframe
+              src={`https://streamable.com/e/${project.streamableId}`}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={project.title}
+            />
+          </div>
         </div>
         <a
           href={`https://streamable.com/${project.streamableId}`}
