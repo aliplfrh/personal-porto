@@ -21,7 +21,7 @@ export const projects: Project[] = [
     description: 'Winning poster of Apatte62 Brawijaya winning Shell Eco Marathon 2024.',
     tags: ['Poster', 'Graphic Design', 'Typography', 'Canva'],
     images: [
-      'https://i.imgur.com/RKkaIGO.png'
+      'https://i.imgur.com/dCiNLYU.png'
     ],
     client: 'Apatte62 Elang Energi',
     year: 2025,
