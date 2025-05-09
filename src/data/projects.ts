@@ -32,7 +32,7 @@ export const projects: Project[] = [
     title: "It's Okay Im here",
     category: 'video',
     thumbnail: 'https://i.imgur.com/RuNDHsF.jpeg',
-    thumbnailImage: 'https://i.imgur.com/RuNDHsF.jpeg',
+    thumbnailImage: 'https://i.imgur.com/4mq0WUw.jpeg',
     description: 'Short Movie about a man called Andi fighting agaist his panic attack/trauma.',
     tags: ['Short Movie', 'Davinci Resolve', 'Premiere Pro'],
     images: ['https://i.imgur.com/BWNoH46.png'],
