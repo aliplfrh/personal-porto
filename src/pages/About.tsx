@@ -121,7 +121,7 @@ const ExperienceSection: React.FC = () => {
               : 'bg-transparent text-gray-400 hover:text-white'
           }`}
         >
-          Work
+          Organization
         </button>
         <button
           onClick={() => setActiveTab('studies')}
