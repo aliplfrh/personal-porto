@@ -47,7 +47,7 @@ export const projects: Project[] = [
     id: 'shop-graph',
     title: 'Inshii.co Product Catalog',
     category: 'graphic',
-    thumbnail: 'https://i.imgur.com/oT31I6K.jpeg',
+    thumbnail: 'https://i.imgur.com/t6obuEb.png',
     description: 'Complete product catalog of Inshii.co for instagram.',
     tags: ['Catalog', 'Digital Illustration', 'Typography', 'Canva'],
     images: [
