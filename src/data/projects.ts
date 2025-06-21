@@ -104,7 +104,7 @@ export const projects: Project[] = [
     id: 'cue-card',
     title: 'Cue Card Design',
     category: 'graphic',
-    thumbnail: 'https://i.imgur.com/HxyaGfH.png',
+    thumbnail: 'https://i.imgur.com/ls4QlLH.png',
     description: 'This cue card is for a community visit event organized by Nol Derajat Film. It features a bold, comic-style design that highlights creativity and cinematic themes.',
     tags: ['Cue Card Design', 'Typography', 'Affinity Photo'],
     images: [
