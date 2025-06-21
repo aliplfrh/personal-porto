@@ -121,7 +121,10 @@ export const projects: Project[] = [
     description: 'This design is some of my best work on the collaborative book proposal for Apatte62 2025,',
     tags: ['Visual', 'Typography', 'Figma'],
     images: [
+      'https://i.imgur.com/xp2Z2UW.png',
+      'https://i.imgur.com/HGautXR.png',
       'https://i.imgur.com/ODt1gRI.png',
+      'https://i.imgur.com/QZrt22L.png'
     ],
     client: 'Nol Derajat Film',
     year: 2025,
