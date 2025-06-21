@@ -123,8 +123,8 @@ export const projects: Project[] = [
     images: [
       'https://i.imgur.com/xp2Z2UW.png',
       'https://i.imgur.com/HGautXR.png',
-      'https://i.imgur.com/ODt1gRI.png',
-      'https://i.imgur.com/QZrt22L.png'
+      'https://i.imgur.com/QZrt22L.png',
+      'https://i.imgur.com/ODt1gRI.png'
     ],
     client: 'Nol Derajat Film',
     year: 2025,
