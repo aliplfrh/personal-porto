@@ -18,7 +18,7 @@ export const projects: Project[] = [
     id: 'poster',
     title: 'Apatte62 Champion Poster',
     category: 'graphic',
-    thumbnail: 'https://i.imgur.com/RKkaIGO.png',
+    thumbnail: 'https://i.imgur.com/7X71CQH.png',
     description: 'Winning poster of Apatte62 Brawijaya winning Shell Eco Marathon 2024.',
     tags: ['Poster', 'Graphic Design', 'Typography', 'Canva'],
     images: [
