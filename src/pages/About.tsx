@@ -17,7 +17,7 @@ const workExperiences = [
     id: 'work2',
     date: 'August 2024 - Present',
     title: 'Nol Derajat Film',
-    subtitle: 'Staff',
+    subtitle: 'Staff HUMI',
     description: "Organization about film and film making.",
     logoSrc: 'https://i.imgur.com/bR28g7Z.png' // EXAMPLE PATH - REPLACE
   },
