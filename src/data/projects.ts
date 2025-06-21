@@ -127,7 +127,7 @@ export const projects: Project[] = [
       'https://i.imgur.com/QZrt22L.png',
       'https://i.imgur.com/ODt1gRI.png'
     ],
-    client: 'Nol Derajat Film',
+    client: 'Apatte62 Brawijaya',
     year: 2025,
     role: 'Graphic Designer'
   },
