@@ -75,7 +75,7 @@ export const projects: Project[] = [
     id: 'social-media-manager',
     title: 'Social Media Strategist',
     category: 'graphic',
-    thumbnail: 'https://i.imgur.com/q0xzb5V.png',
+    thumbnail: 'https://i.imgur.com/3IMvf8G.png',
     description: 'Plans, executes, and optimizes content and campaigns to grow and engage audiences across social platforms.',
     tags: ['Poster Design', 'Typography', 'Class Social Media', 'Canva'],
     images: [
