@@ -113,4 +113,18 @@ export const projects: Project[] = [
     year: 2025,
     role: 'Graphic Designer'
   },
+   {
+    id: 'achievement apt',
+    title: 'Collaborative Proposal Design',
+    category: 'graphic',
+    thumbnail: 'https://i.imgur.com/nOUeaRb.jpeg',
+    description: 'This design is some of my best work on the collaborative book proposal for Apatte62 2025,',
+    tags: ['Visual', 'Typography', 'Figma'],
+    images: [
+      'https://i.imgur.com/tuG9pqQ.png',
+    ],
+    client: 'Nol Derajat Film',
+    year: 2025,
+    role: 'Graphic Designer'
+  },
 ];
