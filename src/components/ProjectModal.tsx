@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, User, Tag, ExternalLink } from 'lucide-react';
 import { Project } from '../types';
 
@@ -14,115 +13,156 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
     e.stopPropagation();
   };
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-        >
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            onClick={handleContentClick}
-            className="bg-dark-card border border-dark-border rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
-          >
-            <div className="sticky top-0 z-10 bg-dark-card/80 backdrop-blur-sm border-b border-dark-border p-4 flex justify-between items-center">
-              <h2 className="text-xl font-bold">{project.title}</h2>
-              <button
-                onClick={onClose}
-                className="p-2 hover:bg-dark-surface rounded-full transition-colors"
-                aria-label="Close modal"
-              >
-                <X size={20} />
-              </button>
-            </div>
+  if (!isOpen) return null;
 
-            <div className="p-6">
-              <div className="mb-8">
-                {project.category === 'video' ? (
-                  <div className="space-y-4">
-                    <div className="rounded-lg overflow-hidden bg-dark-surface">
-                      <img
-                        src={project.thumbnailImage || project.thumbnail}
-                        alt={`${project.title} thumbnail`}
-                        className="w-full h-auto"
-                      />
-                    </div>
-                    {project.streamableId && (
-                      <a
-                        href={`https://streamable.com/${project.streamableId}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-accent-red hover:text-accent-red-light transition-colors"
-                      >
-                        <span className="mr-2">Preview</span>
-                        <ExternalLink size={16} />
-                      </a>
-                    )}
-                  </div>
-                ) : (
-                  project.images && (
-                    <div className="grid gap-4">
-                      {project.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image}
-                          alt={`${project.title} - Image ${index + 1}`}
-                          className="w-full h-auto rounded-lg"
-                        />
-                      ))}
-                    </div>
-                  )
+  return (
+    <div
+      className="modal-overlay"
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '2rem'
+      }}
+    >
+      <div
+        className="modal-content"
+        onClick={handleContentClick}
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+          width: '100%',
+          maxWidth: '800px',
+          maxHeight: '90vh',
+          overflow: 'auto'
+        }}
+      >
+        <div
+          className="modal-header"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '1.5rem',
+            borderBottom: '1px solid #eee',
+            position: 'sticky',
+            top: 0,
+            backgroundColor: '#fff'
+          }}
+        >
+          <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '600' }}>{project.title}</h2>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '0.5rem',
+              borderRadius: '4px'
+            }}
+            aria-label="Close modal"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <div style={{ padding: '2rem' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            {project.category === 'video' ? (
+              <div>
+                <div style={{ borderRadius: '8px', overflow: 'hidden', backgroundColor: '#f5f5f5', marginBottom: '1rem' }}>
+                  <img
+                    src={project.thumbnailImage || project.thumbnail}
+                    alt={`${project.title} thumbnail`}
+                    style={{ width: '100%', height: 'auto' }}
+                  />
+                </div>
+                {project.streamableId && (
+                  <a
+                    href={`https://streamable.com/${project.streamableId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      color: '#e63946',
+                      textDecoration: 'none',
+                      fontWeight: '500'
+                    }}
+                  >
+                    <span style={{ marginRight: '0.5rem' }}>Watch Preview</span>
+                    <ExternalLink size={16} />
+                  </a>
                 )}
               </div>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">About the Project</h3>
-                  <p className="text-gray-300">{project.description}</p>
+            ) : (
+              project.images && (
+                <div style={{ display: 'grid', gap: '1rem' }}>
+                  {project.images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image}
+                      alt={`${project.title} - Image ${index + 1}`}
+                      style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                    />
+                  ))}
                 </div>
+              )
+            )}
+          </div>
 
-                <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-                  {project.client && (
-                    <div className="flex items-center">
-                      <User size={16} className="mr-2" />
-                      <span>Client: {project.client}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center">
-                    <Calendar size={16} className="mr-2" />
-                    <span>Year: {project.year}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Tag size={16} className="mr-2" />
-                    <span>Role: {project.role}</span>
-                  </div>
-                </div>
+          <div style={{ marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: '600', marginBottom: '1rem' }}>About the Project</h3>
+            <p style={{ color: '#666', lineHeight: '1.6' }}>{project.description}</p>
+          </div>
 
-                <div>
-                  <h3 className="text-sm font-semibold mb-2">Technologies & Tools</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-dark-surface border border-dark-border rounded-full text-sm text-gray-300"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem', fontSize: '0.9rem', color: '#666' }}>
+            {project.client && (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <User size={16} style={{ marginRight: '0.5rem' }} />
+                <span>Client: {project.client}</span>
               </div>
+            )}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Calendar size={16} style={{ marginRight: '0.5rem' }} />
+              <span>Year: {project.year}</span>
             </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Tag size={16} style={{ marginRight: '0.5rem' }} />
+              <span>Role: {project.role}</span>
+            </div>
+          </div>
+
+          <div>
+            <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem' }}>Technologies & Tools</h3>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {project.tags.map((tag, index) => (
+                <span
+                  key={index}
+                  style={{
+                    padding: '0.4rem 0.8rem',
+                    backgroundColor: '#f5f5f5',
+                    borderRadius: '20px',
+                    fontSize: '0.8rem',
+                    color: '#666'
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

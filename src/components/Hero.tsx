@@ -1,14 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { ChevronDown, Github, Linkedin, Youtube, Instagram, FileText } from 'lucide-react';
+import { Github, Linkedin, Youtube, Instagram, FileText, ChevronDown } from 'lucide-react';
 
 const Hero: React.FC = () => {
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
-
   const scrollToProjects = () => {
     const element = document.getElementById('portfolio');
     if (element) {
@@ -16,158 +9,99 @@ const Hero: React.FC = () => {
     }
   };
 
-  const titleVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const subtitleVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        delay: 0.3,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const scrollIndicatorVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        delay: 1.2,
-      },
-    },
-    bounce: {
-      y: [0, 10, 0],
-      transition: {
-        duration: 1.5,
-        repeat: Infinity,
-        repeatType: 'loop',
-      },
-    },
-  };
-
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center">
-      {/* Hero content */}
-      <div className="container relative z-10" ref={ref}>
-        <motion.div
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-          className="text-center"
-        >
+    <div className="hero section">
+      <div className="container">
+        <div className="hero-content">
           {/* Profile Section */}
-          <motion.div 
-            variants={titleVariants}
-            className="flex flex-col items-center mb-8"
-          >
-            <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
+          <div className="profile-section">
+            <div className="profile-image">
               <img
                 src="https://i.imgur.com/K35klRx.jpeg"
                 alt="Profile"
-                className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-xl text-white mb-2">Alief Lutfa'ul Ridho</div>
-            <div className="text-gray-400 flex items-center gap-2">
+            <div className="profile-name">Alief Lutfa'ul Ridho</div>
+            <div className="profile-location">
               <span>Based in</span>
               <img
                 src="https://flagcdn.com/id.svg"
                 alt="Indonesia flag"
-                className="w-5 h-auto inline-block"
               />
               <span>Indonesia</span>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.h1 variants={titleVariants} className="text-6xl md:text-8xl font-bold mb-6">
-            Visual <span className="text-accent-red">Artist</span>
-          </motion.h1>
+          <h1 className="hero-title">
+            Visual <span className="highlight">Artist</span>
+          </h1>
           
-          <motion.p variants={subtitleVariants} className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto text-gray-300">
+          <p className="hero-subtitle">
             Weave together the art of video editing and graphic design, crafting cinematic experiences that stir emotion and leave a lasting impression.
-          </motion.p>
+          </p>
+
+          <div className="hero-buttons">
+            <button className="btn btn-primary" onClick={scrollToProjects}>
+              View My Work
+            </button>
+            <a href="#about" className="btn btn-secondary">
+              Learn More
+            </a>
+          </div>
 
           {/* Social Links */}
-          <motion.div
-            variants={subtitleVariants}
-            className="flex justify-center space-x-6"
-          >
+          <div className="social-links">
             <a
               href="https://github.com/aliplfrh"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-accent-red transition-colors duration-300"
               aria-label="GitHub Profile"
             >
-              <Github size={28} />
+              <Github size={24} />
             </a>
             <a
               href="https://linkedin.com/in/aliplfrh"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-accent-red transition-colors duration-300"
               aria-label="LinkedIn Profile"
             >
-              <Linkedin size={28} />
+              <Linkedin size={24} />
             </a>
             <a
               href="https://youtube.com/@aliplfrh"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-accent-red transition-colors duration-300"
               aria-label="YouTube Channel"
             >
-              <Youtube size={28} />
+              <Youtube size={24} />
             </a>
             <a
               href="https://instagram.com/aliplfrh"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-accent-red transition-colors duration-300"
               aria-label="Instagram Profile"
             >
-              <Instagram size={28} />
+              <Instagram size={24} />
             </a>
             <a
-              href="/cv.pdf" // You can update this link to point to your actual CV
+              href="/cv.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-accent-red transition-colors duration-300"
               aria-label="Download CV"
             >
-              <FileText size={28} />
+              <FileText size={24} />
             </a>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 w-full flex justify-center text-white cursor-pointer"
-        initial="hidden"
-        animate={inView ? ['visible', 'bounce'] : 'hidden'}
-        variants={scrollIndicatorVariants}
-        onClick={scrollToProjects}
-      >
-        <div className="flex flex-col items-center">
-          <span className="text-sm mb-2 text-gray-400">Scroll Down</span>
-          <ChevronDown size={24} className="text-accent-red" />
+      <div className="scroll-indicator" onClick={scrollToProjects}>
+        <span>Scroll Down</span>
+        <div className="scroll-arrow">
+          <ChevronDown size={24} />
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
