@@ -37,8 +37,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
         className="modal-content"
         onClick={handleContentClick}
         style={{
-          backgroundColor: '#fff',
-          borderRadius: '8px',
+          backgroundColor: '#1a1a1a',
+          borderRadius: '16px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
           width: '100%',
           maxWidth: '800px',
           maxHeight: '90vh',
@@ -52,13 +53,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: '1.5rem',
-            borderBottom: '1px solid #eee',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
             position: 'sticky',
             top: 0,
-            backgroundColor: '#fff'
+            backgroundColor: '#1a1a1a'
           }}
         >
-          <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '600' }}>{project.title}</h2>
+          <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '600', color: '#fff' }}>{project.title}</h2>
           <button
             onClick={onClose}
             style={{
@@ -66,7 +67,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
               border: 'none',
               cursor: 'pointer',
               padding: '0.5rem',
-              borderRadius: '4px'
+              borderRadius: '4px',
+              color: '#888'
             }}
             aria-label="Close modal"
           >
@@ -78,7 +80,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
           <div style={{ marginBottom: '2rem' }}>
             {project.category === 'video' ? (
               <div>
-                <div style={{ borderRadius: '8px', overflow: 'hidden', backgroundColor: '#f5f5f5', marginBottom: '1rem' }}>
+                <div style={{ borderRadius: '12px', overflow: 'hidden', backgroundColor: 'rgba(255, 255, 255, 0.05)', marginBottom: '1rem' }}>
                   <img
                     src={project.thumbnailImage || project.thumbnail}
                     alt={`${project.title} thumbnail`}
@@ -93,7 +95,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      color: '#e63946',
+                      color: '#8b5cf6',
                       textDecoration: 'none',
                       fontWeight: '500'
                     }}
@@ -120,11 +122,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
           </div>
 
           <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: '600', marginBottom: '1rem' }}>About the Project</h3>
-            <p style={{ color: '#666', lineHeight: '1.6' }}>{project.description}</p>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: '600', marginBottom: '1rem', color: '#fff' }}>About the Project</h3>
+            <p style={{ color: '#a0a0a0', lineHeight: '1.6' }}>{project.description}</p>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem', fontSize: '0.9rem', color: '#666' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem', fontSize: '0.9rem', color: '#888' }}>
             {project.client && (
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <User size={16} style={{ marginRight: '0.5rem' }} />
@@ -142,17 +144,18 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
           </div>
 
           <div>
-            <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem' }}>Technologies & Tools</h3>
+            <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem', color: '#fff' }}>Technologies & Tools</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {project.tags.map((tag, index) => (
                 <span
                   key={index}
                   style={{
                     padding: '0.4rem 0.8rem',
-                    backgroundColor: '#f5f5f5',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                     borderRadius: '20px',
                     fontSize: '0.8rem',
-                    color: '#666'
+                    color: '#888'
                   }}
                 >
                   {tag}
