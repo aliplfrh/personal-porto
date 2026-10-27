@@ -49,7 +49,7 @@ const Hero: React.FC = () => {
               />
             </div>
             <div className="profile-info">
-              <h1 className="profile-greeting">Hey, I'm Alief</h1>
+              <h1 className="profile-greeting gradient-heading">Hey, I'm Alief</h1>
               <div className="profile-status">
                 <span className="status-dot"></span>
                 Available for work

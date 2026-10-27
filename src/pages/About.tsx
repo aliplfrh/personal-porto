@@ -3,14 +3,6 @@ import React, { useState } from 'react';
 // Data for the Experience Section
 const workExperiences = [
   {
-    id: 'work1',
-    date: 'Jan 2069',
-    title: 'woop woopp',
-    subtitle: 'woppwopp',
-    description: 'Web Design; Web Development; Wordpress + Elementor.',
-    logoSrc: 'https://i.imgur.com/pxSB012.png'
-  },
-  {
     id: 'work2',
     date: 'August 2024 - Present',
     title: 'Nol Derajat Film',
@@ -107,7 +99,7 @@ const About: React.FC = () => {
       <div className="container">
         <div className="about-content">
           <div className="about-text">
-            <h2>About Me</h2>
+            <h2 className="gradient-heading">About me</h2>
             <p>
               I'm a Visual Artist specializing in cinematic video editing and expressive design.
               With 3+ years of experience, I craft emotionally rich content that connects, inspires,
@@ -130,7 +122,7 @@ const About: React.FC = () => {
         <ExperienceSection />
 
         <div className="tools">
-          <h3>Tools & Technologies</h3>
+          <h3>Tools and technologies</h3>
           <div className="tools-grid">
             <div className="tool-item">
               <img src="https://www.adobe.com/content/dam/cc/icons/premiere.svg" alt="Premiere Pro" />

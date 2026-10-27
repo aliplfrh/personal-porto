@@ -5,10 +5,9 @@ import ProjectModal from './ProjectModal';
 
 interface ProjectCardProps {
   project: Project;
-  index: number;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -16,6 +15,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       <div
         className="project-card"
         onClick={() => setIsModalOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsModalOpen(true);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="dialog"
       >
         <div className="project-image">
           <img

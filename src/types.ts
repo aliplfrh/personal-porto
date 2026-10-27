@@ -11,6 +11,6 @@ export interface Project {
   thumbnailImage?: string;
   images?: string[];
   client?: string;
-  year: number;
+  year: number | string;
   role: string;
 }

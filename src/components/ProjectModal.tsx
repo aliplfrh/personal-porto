@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Calendar, User, Tag, ExternalLink } from 'lucide-react';
 import { Project } from '../types';
 
@@ -13,78 +13,50 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
     e.stopPropagation();
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div
-      className="modal-overlay"
-      onClick={onClose}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-        padding: '2rem'
-      }}
-    >
-      <div
-        className="modal-content"
-        onClick={handleContentClick}
-        style={{
-          backgroundColor: '#1a1a1a',
-          borderRadius: '16px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          width: '100%',
-          maxWidth: '800px',
-          maxHeight: '90vh',
-          overflow: 'auto'
-        }}
-      >
-        <div
-          className="modal-header"
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '1.5rem',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-            position: 'sticky',
-            top: 0,
-            backgroundColor: '#1a1a1a'
-          }}
-        >
-          <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '600', color: '#fff' }}>{project.title}</h2>
-          <button
-            onClick={onClose}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '0.5rem',
-              borderRadius: '4px',
-              color: '#888'
-            }}
-            aria-label="Close modal"
-          >
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={handleContentClick} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div className="modal-header">
+          <h2 id="modal-title" style={{ margin: 0 }}>{project.title}</h2>
+          <button className="modal-close" onClick={onClose} aria-label="Close modal">
             <X size={20} />
           </button>
         </div>
 
-        <div style={{ padding: '2rem' }}>
-          <div style={{ marginBottom: '2rem' }}>
+        <div style={{ padding: 'var(--space-400)' }}>
+          <div style={{ marginBottom: 'var(--space-400)' }}>
             {project.category === 'video' ? (
               <div>
-                <div style={{ borderRadius: '12px', overflow: 'hidden', backgroundColor: 'rgba(255, 255, 255, 0.05)', marginBottom: '1rem' }}>
+                <div
+                  style={{
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    background: 'var(--bg-surface-higher)',
+                    marginBottom: 'var(--space-200)',
+                  }}
+                >
                   <img
                     src={project.thumbnailImage || project.thumbnail}
                     alt={`${project.title} thumbnail`}
-                    style={{ width: '100%', height: 'auto' }}
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
                   />
                 </div>
                 {project.streamableId && (
@@ -95,25 +67,27 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      color: '#8b5cf6',
+                      gap: 'var(--space-75)',
+                      color: 'var(--accent)',
                       textDecoration: 'none',
-                      fontWeight: '500'
+                      fontWeight: 600,
+                      fontSize: 'var(--text-sm)',
                     }}
                   >
-                    <span style={{ marginRight: '0.5rem' }}>Watch Preview</span>
+                    Watch preview
                     <ExternalLink size={16} />
                   </a>
                 )}
               </div>
             ) : (
               project.images && (
-                <div style={{ display: 'grid', gap: '1rem' }}>
+                <div style={{ display: 'grid', gap: 'var(--space-200)' }}>
                   {project.images.map((image, index) => (
                     <img
                       key={index}
                       src={image}
-                      alt={`${project.title} - Image ${index + 1}`}
-                      style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                      alt={`${project.title} image ${index + 1}`}
+                      style={{ width: '100%', height: 'auto', borderRadius: '8px', display: 'block' }}
                     />
                   ))}
                 </div>
@@ -121,43 +95,39 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
             )}
           </div>
 
-          <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: '600', marginBottom: '1rem', color: '#fff' }}>About the Project</h3>
-            <p style={{ color: '#a0a0a0', lineHeight: '1.6' }}>{project.description}</p>
+          <div style={{ marginBottom: 'var(--space-400)' }}>
+            <h3 style={{ fontSize: 'var(--text-lg)', marginBottom: 'var(--space-200)' }}>About the project</h3>
+            <p style={{ marginBottom: 0 }}>{project.description}</p>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem', fontSize: '0.9rem', color: '#888' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 'var(--space-300)',
+              marginBottom: 'var(--space-400)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+            }}
+          >
             {project.client && (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <User size={16} style={{ marginRight: '0.5rem' }} />
-                <span>Client: {project.client}</span>
-              </div>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-75)' }}>
+                <User size={16} /> Client: {project.client}
+              </span>
             )}
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Calendar size={16} style={{ marginRight: '0.5rem' }} />
-              <span>Year: {project.year}</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Tag size={16} style={{ marginRight: '0.5rem' }} />
-              <span>Role: {project.role}</span>
-            </div>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-75)' }}>
+              <Calendar size={16} /> Year: {project.year}
+            </span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-75)' }}>
+              <Tag size={16} /> Role: {project.role}
+            </span>
           </div>
 
           <div>
-            <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1rem', color: '#fff' }}>Technologies & Tools</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <h3 style={{ fontSize: 'var(--text-base)', marginBottom: 'var(--space-200)' }}>Technologies and tools</h3>
+            <div className="project-tags">
               {project.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  style={{
-                    padding: '0.4rem 0.8rem',
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '20px',
-                    fontSize: '0.8rem',
-                    color: '#888'
-                  }}
-                >
+                <span key={index} className="project-tag">
                   {tag}
                 </span>
               ))}

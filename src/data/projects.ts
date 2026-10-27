@@ -84,7 +84,7 @@ export const projects: Project[] = [
       'https://i.imgur.com/0BqKaDV.png'
     ],
     client: 'Class of Science Two',
-    year: 2022-2024,
+    year: '2022 to 2024',
     role: 'Graphic Designer'
   },
   {
