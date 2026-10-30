@@ -69,7 +69,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, isOpen, onClose })
                       alignItems: 'center',
                       gap: 'var(--space-75)',
                       color: 'var(--accent)',
-                      textDecoration: 'none',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '4px',
                       fontWeight: 600,
                       fontSize: 'var(--text-sm)',
                     }}

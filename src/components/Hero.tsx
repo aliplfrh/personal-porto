@@ -117,11 +117,15 @@ const Hero: React.FC = () => {
           </div>
 
           <div className="map-widget widget">
-            <img
-              src="https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/112.7521,-7.9666,8,0/800x400@2x?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw"
-              alt="Map of Indonesia"
-              className="map-image"
-            />
+            <div className="map-dotgrid" aria-hidden="true"></div>
+            <div className="map-pin">
+              <span className="map-pin-ring"></span>
+              <span className="map-pin-dot"></span>
+            </div>
+            <div className="map-location">
+              <img src="https://flagcdn.com/id.svg" alt="" />
+              <span>Indonesia</span>
+            </div>
             <div className="map-overlay">
               {currentTime}
             </div>
@@ -131,20 +135,20 @@ const Hero: React.FC = () => {
             <h3>Tech Stack</h3>
             <div className="tech-grid">
               <div className="tech-item">
+                <img src="https://api.iconify.design/streamline-logos/adobe-after-effects-logo-solid.svg" alt="After Effects" className="tech-icon" />
+                <span className="tech-name">After Effects</span>
+              </div>
+              <div className="tech-item">
                 <img src="https://www.adobe.com/content/dam/cc/icons/premiere.svg" alt="Premiere Pro" className="tech-icon" />
-                <span className="tech-name">Premiere</span>
+                <span className="tech-name">Premiere Pro</span>
               </div>
               <div className="tech-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/DaVinci_Resolve_17_logo.svg" alt="DaVinci" className="tech-icon" />
-                <span className="tech-name">DaVinci</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/DaVinci_Resolve_17_logo.svg" alt="DaVinci Resolve" className="tech-icon" />
+                <span className="tech-name">DaVinci Resolve</span>
               </div>
               <div className="tech-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Logo_AffinityDesigner.svg" alt="Affinity Designer" className="tech-icon" />
-                <span className="tech-name">Designer</span>
-              </div>
-              <div className="tech-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Logo_AffinityPhoto.svg" alt="Affinity Photo" className="tech-icon" />
-                <span className="tech-name">Photo</span>
+                <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/svg/adobe-photoshop.svg" alt="Photoshop" className="tech-icon" />
+                <span className="tech-name">Photoshop</span>
               </div>
               <div className="tech-item">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg" alt="Figma" className="tech-icon" />

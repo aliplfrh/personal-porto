@@ -3,8 +3,16 @@ import React, { useState } from 'react';
 // Data for the Experience Section
 const workExperiences = [
   {
+    id: 'work1',
+    date: 'Ongoing',
+    title: 'Apatte62',
+    subtitle: 'Creative Media Branding',
+    description: 'Apatte62 is a student organization at Universitas Brawijaya that runs Mekano 3D, a 3D printing service.',
+    logoSrc: ''
+  },
+  {
     id: 'work2',
-    date: 'August 2024 - Present',
+    date: 'August 2024 - October 2025',
     title: 'Nol Derajat Film',
     subtitle: 'Staff HUMI',
     description: "Organization about film and film making.",
