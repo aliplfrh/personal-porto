@@ -78,7 +78,6 @@ body {
     linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
   background-size: 64px 64px;
-  background-attachment: fixed;
   overflow-x: hidden;
 }
 
@@ -815,8 +814,7 @@ a:focus-visible,
   position: absolute;
   top: var(--space-200);
   right: var(--space-200);
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.85);
   color: var(--text-primary);
   padding: var(--space-50) var(--space-200);
   border-radius: 999px;

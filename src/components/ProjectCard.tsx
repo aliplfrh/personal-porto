@@ -29,6 +29,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <img
             src={project.thumbnail}
             alt={project.title}
+            loading="lazy"
+            decoding="async"
           />
           <div className="project-category">
             {project.category === 'video' ? (
