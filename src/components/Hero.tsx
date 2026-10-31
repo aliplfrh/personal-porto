@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Youtube, Instagram, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useSiteContent } from '../content/SiteContentContext';
 
 const Hero: React.FC = () => {
+  const { content } = useSiteContent();
   const [currentTime, setCurrentTime] = useState('');
   const [currentArt, setCurrentArt] = useState(0);
 
@@ -49,14 +51,13 @@ const Hero: React.FC = () => {
               />
             </div>
             <div className="profile-info">
-              <h1 className="profile-greeting gradient-heading">Hey, I'm Alief</h1>
+              <h1 className="profile-greeting gradient-heading">{content.hero.greeting}</h1>
               <div className="profile-status">
                 <span className="status-dot"></span>
-                Available for work
+                {content.hero.status}
               </div>
               <p className="profile-bio">
-                I'm a Visual Artist specializing in cinematic video editing and expressive design.
-                Weaving together the art of video editing and graphic design, crafting cinematic experiences that stir emotion and leave a lasting impression.
+                {content.hero.bio}
               </p>
               <div className="profile-location">
                 <span>Based in</span>

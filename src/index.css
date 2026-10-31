@@ -988,6 +988,199 @@ a:focus-visible,
   .timeline-item::before { left: 11px; }
 }
 
+/* ============================================================
+   Admin — entry button, login, and edit UI
+   ============================================================ */
+.admin-entry-btn {
+  position: fixed;
+  top: var(--space-300);
+  right: var(--space-400);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(24, 24, 24, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: background 300ms var(--ease-base), color 300ms var(--ease-base), border-color 300ms var(--ease-base);
+}
+
+.admin-entry-btn:hover {
+  background: var(--bg-surface-higher);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.admin-page {
+  min-height: 100vh;
+  background: var(--bg-base);
+  padding: var(--space-500) var(--space-400) var(--space-900);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.admin-login {
+  max-width: 360px;
+  margin: var(--space-900) auto 0;
+  text-align: center;
+}
+
+.admin-login form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  margin-top: var(--space-400);
+  text-align: left;
+}
+
+.admin-page label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-75);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-200);
+}
+
+.admin-page input,
+.admin-page textarea,
+.admin-page select {
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: var(--space-100) var(--space-200);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  transition: border-color 300ms var(--ease-base);
+}
+
+.admin-page input:focus,
+.admin-page textarea:focus,
+.admin-page select:focus {
+  outline: none;
+  border-color: var(--border-strong);
+}
+
+.admin-error {
+  color: #f87171;
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.admin-back-link {
+  display: inline-block;
+  margin-top: var(--space-300);
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+  text-decoration: none;
+}
+
+.admin-back-link:hover { color: var(--text-primary); }
+
+.admin-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+  margin-bottom: var(--space-600);
+  padding-bottom: var(--space-300);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.admin-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+}
+
+.admin-btn-primary,
+.admin-btn-ghost,
+.admin-btn-add,
+.admin-btn-remove {
+  border-radius: 8px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 300ms var(--ease-base), color 300ms var(--ease-base), opacity 300ms var(--ease-base);
+  border: 1px solid transparent;
+  padding: var(--space-75) var(--space-300);
+}
+
+.admin-btn-primary {
+  background: #ffffff;
+  color: #000000;
+}
+
+.admin-btn-primary:hover { opacity: 0.85; }
+.admin-btn-primary:disabled { opacity: 0.5; cursor: default; }
+
+.admin-btn-ghost {
+  background: transparent;
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.admin-btn-ghost:hover { border-color: var(--border-strong); color: var(--text-primary); }
+
+.admin-section {
+  margin-bottom: var(--space-700);
+}
+
+.admin-section h2 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-300);
+}
+
+.admin-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: var(--space-300);
+  margin-bottom: var(--space-200);
+}
+
+.admin-row {
+  display: flex;
+  gap: var(--space-100);
+  align-items: flex-start;
+  margin-bottom: var(--space-100);
+}
+
+.admin-row input,
+.admin-row textarea { flex: 1; }
+
+.admin-btn-add {
+  background: transparent;
+  border: 1px dashed var(--border-strong);
+  color: var(--text-secondary);
+  width: 100%;
+}
+
+.admin-btn-add:hover { color: var(--text-primary); border-color: var(--text-primary); }
+
+.admin-btn-remove {
+  background: transparent;
+  color: var(--text-tertiary);
+  padding: var(--space-50) var(--space-200);
+  flex-shrink: 0;
+}
+
+.admin-btn-remove:hover { color: #f87171; }
+
+.admin-bottom-save {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--space-400);
+  border-top: 1px solid var(--border-subtle);
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

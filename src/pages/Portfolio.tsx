@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import ProjectCard from '../components/ProjectCard';
-import { projects } from '../data/projects';
+import { useSiteContent } from '../content/SiteContentContext';
 
 const Portfolio: React.FC = () => {
+  const { content } = useSiteContent();
   const [filter, setFilter] = useState<'all' | 'video' | 'graphic'>('all');
-  
-  const filteredProjects = projects.filter(
+
+  const filteredProjects = content.projects.filter(
     project => filter === 'all' || project.category === filter
   );
 
