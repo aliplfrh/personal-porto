@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSiteContent } from '../content/SiteContentContext';
 import { SiteContent, ExperienceEntry, ToolEntry } from '../content/types';
 import { Project } from '../types';
@@ -136,7 +137,7 @@ const Admin: React.FC = () => {
               {loggingIn ? 'Logging in…' : 'Log in'}
             </button>
           </form>
-          <a href="#home" className="admin-back-link">Back to site</a>
+          <Link to="/" className="admin-back-link">Back to site</Link>
         </div>
       </div>
     );
@@ -147,7 +148,7 @@ const Admin: React.FC = () => {
       <div className="admin-topbar">
         <h1>Edit portfolio</h1>
         <div className="admin-topbar-actions">
-          <a href="#home" className="admin-back-link">View site</a>
+          <Link to="/" className="admin-back-link">View site</Link>
           <button className="admin-btn-ghost" onClick={handleLogout}>Log out</button>
           <button className="admin-btn-primary" onClick={handleSave} disabled={status === 'saving'}>
             {status === 'saving' ? 'Saving…' : status === 'saved' ? 'Saved ✓' : 'Save changes'}

@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const sections = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'portfolio', label: 'Portfolio' },
-];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -26,6 +21,10 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const onHome = location.pathname === '/';
+  const onWorks = location.pathname.startsWith('/portofolio');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -34,6 +33,8 @@ const Navbar: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!onHome) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -45,46 +46,72 @@ const Navbar: React.FC = () => {
       { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
     );
 
-    sections.forEach(({ id }) => {
+    ['home', 'about'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [onHome]);
 
-  const scrollToSection = (path: string) => {
-    const element = document.querySelector(path);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
+  const goToSection = (id: string) => {
+    setIsOpen(false);
+    if (onHome) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate(`/#${id}`);
     }
   };
+
+  const isCurrent = (id: string) => (id === 'works' ? onWorks : onHome && activeSection === id);
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav">
-        <a
-          href="#home"
+        <Link
+          to="/"
           className="logo"
-          onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}
+          onClick={(e) => {
+            if (onHome) {
+              e.preventDefault();
+              goToSection('home');
+            }
+          }}
         >
           aliplfrh
-        </a>
+        </Link>
 
         <ul className="nav-links">
-          {sections.map(({ id, label }) => (
-            <li key={id}>
-              <a
-                href={`#${id}`}
-                className={activeSection === id ? 'current' : ''}
-                aria-current={activeSection === id ? 'page' : undefined}
-                onClick={(e) => { e.preventDefault(); scrollToSection(`#${id}`); }}
-              >
-                {label}
-              </a>
-            </li>
-          ))}
+          <li>
+            <a
+              href="#home"
+              className={isCurrent('home') ? 'current' : ''}
+              aria-current={isCurrent('home') ? 'page' : undefined}
+              onClick={(e) => { e.preventDefault(); goToSection('home'); }}
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              href="#about"
+              className={isCurrent('about') ? 'current' : ''}
+              aria-current={isCurrent('about') ? 'page' : undefined}
+              onClick={(e) => { e.preventDefault(); goToSection('about'); }}
+            >
+              About
+            </a>
+          </li>
+          <li>
+            <Link
+              to="/portofolio"
+              className={isCurrent('works') ? 'current' : ''}
+              aria-current={isCurrent('works') ? 'page' : undefined}
+              onClick={() => setIsOpen(false)}
+            >
+              Works
+            </Link>
+          </li>
         </ul>
 
         <button
@@ -121,16 +148,15 @@ const Navbar: React.FC = () => {
             variants={menuVariants}
           >
             <ul className="mobile-nav-links">
-              {sections.map(({ id, label }) => (
-                <motion.li key={id} variants={linkVariants}>
-                  <a
-                    href={`#${id}`}
-                    onClick={(e) => { e.preventDefault(); scrollToSection(`#${id}`); }}
-                  >
-                    {label}
-                  </a>
-                </motion.li>
-              ))}
+              <motion.li variants={linkVariants}>
+                <a href="#home" onClick={(e) => { e.preventDefault(); goToSection('home'); }}>Home</a>
+              </motion.li>
+              <motion.li variants={linkVariants}>
+                <a href="#about" onClick={(e) => { e.preventDefault(); goToSection('about'); }}>About</a>
+              </motion.li>
+              <motion.li variants={linkVariants}>
+                <Link to="/portofolio" onClick={() => setIsOpen(false)}>Works</Link>
+              </motion.li>
             </ul>
           </motion.div>
         )}

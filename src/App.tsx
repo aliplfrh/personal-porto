@@ -1,26 +1,59 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { Routes, Route, useLocation, Link } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import { LogIn } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Statement from './components/Statement';
 import Reveal from './components/Reveal';
-import Portfolio from './pages/Portfolio';
 import About from './pages/About';
+import WorksIndex from './pages/WorksIndex';
+import WorkDetail from './pages/WorkDetail';
 import Admin from './pages/Admin';
 
+const titles: Record<string, string> = {
+  '/': "Alief Lutfa'ul Ridho — Visual Artist",
+  '/portofolio': 'Works — Alief Lutfa\'ul Ridho',
+};
+
+function HomePage() {
+  return (
+    <main id="main">
+      <section id="home">
+        <Hero />
+      </section>
+
+      <Statement />
+
+      <section id="about">
+        <Reveal>
+          <About />
+        </Reveal>
+      </section>
+    </main>
+  );
+}
+
 function App() {
-  const [isAdmin, setIsAdmin] = useState(window.location.hash === '#admin');
+  const location = useLocation();
+  const isAdmin = location.pathname === '/admin';
 
   useEffect(() => {
-    document.title = "Alief Lutfa'ul Ridho — Visual Artist";
-  }, []);
+    document.title = titles[location.pathname] || "Alief Lutfa'ul Ridho — Visual Artist";
+  }, [location.pathname]);
 
   useEffect(() => {
-    const onHashChange = () => setIsAdmin(window.location.hash === '#admin');
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
-  }, []);
+    if (location.pathname === '/' && location.hash) {
+      const id = location.hash.slice(1);
+      // Give the homepage a tick to mount before measuring its layout.
+      const timer = setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.hash]);
 
   if (isAdmin) {
     return <Admin />;
@@ -28,31 +61,19 @@ function App() {
 
   return (
     <div className="app">
-      <a href="#admin" className="admin-entry-btn" aria-label="Admin login">
+      <Link to="/admin" className="admin-entry-btn" aria-label="Admin login">
         <LogIn size={16} />
-      </a>
+      </Link>
 
       <Navbar />
 
-      <main id="main">
-        <section id="home">
-          <Hero />
-        </section>
-
-        <Statement />
-
-        <section id="about">
-          <Reveal>
-            <About />
-          </Reveal>
-        </section>
-
-        <section id="portfolio">
-          <Reveal>
-            <Portfolio />
-          </Reveal>
-        </section>
-      </main>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/portofolio" element={<WorksIndex />} />
+          <Route path="/portofolio/:slug" element={<WorkDetail />} />
+        </Routes>
+      </AnimatePresence>
 
       <Footer />
     </div>
