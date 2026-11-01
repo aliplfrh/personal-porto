@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSiteContent } from '../content/SiteContentContext';
 import { SiteContent, ExperienceEntry, ToolEntry } from '../content/types';
-import { Project } from '../types';
+import { Project, ProjectCategory, PROJECT_CATEGORIES } from '../types';
 
 const SESSION_KEY = 'admin_session';
 
@@ -35,7 +35,7 @@ function emptyProject(): Project {
   return {
     id: `project-${Date.now()}`,
     title: '',
-    category: 'video',
+    categories: [],
     thumbnail: '',
     description: '',
     tags: [],
@@ -335,20 +335,29 @@ const Admin: React.FC = () => {
                 }}
               />
             </label>
-            <label>
-              Category
-              <select
-                value={project.category}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], category: e.target.value as Project['category'] };
-                  setDraft({ ...draft, projects: next });
-                }}
-              >
-                <option value="video">Video</option>
-                <option value="graphic">Graphic</option>
-              </select>
-            </label>
+            <fieldset className="admin-fieldset">
+              <legend>Categories (select all that apply)</legend>
+              <div className="admin-checkbox-group">
+                {PROJECT_CATEGORIES.map(({ value, label }) => (
+                  <label key={value} className="admin-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={project.categories.includes(value)}
+                      onChange={(e) => {
+                        const next = [...draft.projects];
+                        const current = next[i].categories;
+                        const categories: ProjectCategory[] = e.target.checked
+                          ? [...current, value]
+                          : current.filter((c) => c !== value);
+                        next[i] = { ...next[i], categories };
+                        setDraft({ ...draft, projects: next });
+                      }}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <label>
               Description
               <textarea

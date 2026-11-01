@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     id: 'commercial-spot-1',
     title: 'MOTION - Brainstorming ',
-    category: 'video',
+    categories: ['video-editing'],
     thumbnail: 'https://i.imgur.com/0RDmipm.png',
     thumbnailImage: 'https://i.imgur.com/0RDmipm.png',
     description: 'A educational reels about brain storming in film making.',
@@ -17,7 +17,7 @@ export const projects: Project[] = [
   {
     id: 'poster',
     title: 'Apatte62 Champion Poster',
-    category: 'graphic',
+    categories: ['graphic-design'],
     thumbnail: 'https://i.imgur.com/7X71CQH.png',
     description: 'Winning poster of Apatte62 Brawijaya winning Shell Eco Marathon 2024.',
     tags: ['Poster', 'Graphic Design', 'Typography', 'Canva'],
@@ -32,7 +32,7 @@ export const projects: Project[] = [
   {
     id: 'short-movie',
     title: "It's Okay Im here",
-    category: 'video',
+    categories: ['video-editing'],
     thumbnail: 'https://i.imgur.com/RuNDHsF.jpeg',
     thumbnailImage: 'https://i.imgur.com/4mq0WUw.jpeg',
     description: 'Short Movie about a man called Andi fighting agaist his panic attack/trauma.',
@@ -46,7 +46,7 @@ export const projects: Project[] = [
   {
     id: 'shop-graph',
     title: 'Inshii.co Product Catalog',
-    category: 'graphic',
+    categories: ['graphic-design'],
     thumbnail: 'https://i.imgur.com/t6obuEb.png',
     description: 'Complete product catalog of Inshii.co for instagram.',
     tags: ['Catalog', 'Digital Illustration', 'Typography', 'Canva'],
@@ -61,7 +61,7 @@ export const projects: Project[] = [
   {
     id: 'corporate-video',
     title: "What's Up Sineas",
-    category: 'video',
+    categories: ['video-editing'],
     thumbnail: 'https://i.imgur.com/miA8Dg7.jpeg',
     thumbnailImage: 'https://i.imgur.com/miA8Dg7.jpeg',
     description: 'Informative news about what happend last month in film makirng scenes.',
@@ -74,7 +74,7 @@ export const projects: Project[] = [
   {
     id: 'social-media-manager',
     title: 'Social Media Strategist',
-    category: 'graphic',
+    categories: ['graphic-design'],
     thumbnail: 'https://i.imgur.com/3IMvf8G.png',
     description: 'Plans, executes, and optimizes content and campaigns to grow and engage audiences across social platforms.',
     tags: ['Poster Design', 'Typography', 'Class Social Media', 'Canva'],
@@ -90,7 +90,7 @@ export const projects: Project[] = [
   {
     id: 'commercial-spot-2',
     title: 'MOTION - Lightning ',
-    category: 'video',
+    categories: ['video-editing'],
     thumbnail: 'https://i.imgur.com/pYkny1n.png',
     thumbnailImage: 'https://i.imgur.com/pYkny1n.png',
     description: 'A educational reels about lightning in film making.',
@@ -103,7 +103,7 @@ export const projects: Project[] = [
   {
     id: 'cue-card',
     title: 'Cue Card Design',
-    category: 'graphic',
+    categories: ['graphic-design'],
     thumbnail: 'https://i.imgur.com/ls4QlLH.png',
     description: 'This cue card is for a community visit event organized by Nol Derajat Film. It features a bold, comic-style design that highlights creativity and cinematic themes.',
     tags: ['Cue Card Design', 'Typography', 'Affinity Photo'],
@@ -117,7 +117,7 @@ export const projects: Project[] = [
    {
     id: 'achievement apt',
     title: 'Collaborative Proposal Design',
-    category: 'graphic',
+    categories: ['graphic-design'],
     thumbnail: 'https://i.imgur.com/nOUeaRb.jpeg',
     description: 'This design is some of my best work on the collaborative book proposal for Apatte62 2025,',
     tags: ['Visual', 'Typography', 'Figma'],

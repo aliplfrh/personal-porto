@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useSiteContent } from '../content/SiteContentContext';
+import { PROJECT_CATEGORIES } from '../types';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -37,33 +38,40 @@ const WorksIndex: React.FC = () => {
         <p>A collection of cinematic edits and visual identity projects.</p>
       </div>
 
-      <ul
-        className="works-list"
-        onMouseLeave={() => setActiveId(null)}
-      >
-        {projects.map((project) => (
-          <li
-            key={project.id}
-            className={`works-row ${activeId && activeId !== project.id ? 'is-dimmed' : ''}`}
-          >
-            <Link
-              to={`/portofolio/${project.id}`}
-              onMouseEnter={() => setActiveId(project.id)}
-              onFocus={() => setActiveId(project.id)}
-              onBlur={() => setActiveId(null)}
-            >
-              <span className="works-row-thumb" aria-hidden="true">
-                <img src={project.thumbnailImage || project.thumbnail} alt="" loading="lazy" />
-              </span>
-              <span className="works-row-title">{project.title}</span>
-              <span className="works-row-meta">
-                {project.client && <span>{project.client}</span>}
-                <span>{project.year}</span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {PROJECT_CATEGORIES.map(({ value, label }) => {
+        const group = projects.filter((p) => p.categories.includes(value));
+        if (group.length === 0) return null;
+
+        return (
+          <div className="works-group" key={value}>
+            <h2 className="works-group-title">{label}</h2>
+            <ul className="works-list" onMouseLeave={() => setActiveId(null)}>
+              {group.map((project) => (
+                <li
+                  key={project.id}
+                  className={`works-row ${activeId && activeId !== project.id ? 'is-dimmed' : ''}`}
+                >
+                  <Link
+                    to={`/portofolio/${project.id}`}
+                    onMouseEnter={() => setActiveId(project.id)}
+                    onFocus={() => setActiveId(project.id)}
+                    onBlur={() => setActiveId(null)}
+                  >
+                    <span className="works-row-thumb" aria-hidden="true">
+                      <img src={project.thumbnailImage || project.thumbnail} alt="" loading="lazy" />
+                    </span>
+                    <span className="works-row-title">{project.title}</span>
+                    <span className="works-row-meta">
+                      {project.client && <span>{project.client}</span>}
+                      <span>{project.year}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
 
       {projects.length === 0 && (
         <p className="projects-empty">No works published yet.</p>

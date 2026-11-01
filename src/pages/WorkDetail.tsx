@@ -3,6 +3,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
+import { PROJECT_CATEGORIES } from '../types';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -90,9 +91,15 @@ const WorkDetail: React.FC = () => {
               <span>{project.client}</span>
             </div>
           )}
-          <div className="work-info-row">
+          <div className="work-info-row work-info-tags">
             <span>Work</span>
-            <span>{project.category === 'video' ? 'Video editing' : 'Graphic design'}</span>
+            <span className="project-tags">
+              {project.categories.map((cat) => (
+                <span key={cat} className="project-tag">
+                  {PROJECT_CATEGORIES.find((c) => c.value === cat)?.label || cat}
+                </span>
+              ))}
+            </span>
           </div>
           <div className="work-info-row">
             <span>Year</span>
