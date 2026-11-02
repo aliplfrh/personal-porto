@@ -136,7 +136,7 @@ const Hero: React.FC = () => {
             <h3>Tech Stack</h3>
             <div className="tech-grid">
               <div className="tech-item">
-                <img src="https://api.iconify.design/streamline-logos/adobe-after-effects-logo-solid.svg" alt="After Effects" className="tech-icon" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects" className="tech-icon" />
                 <span className="tech-name">After Effects</span>
               </div>
               <div className="tech-item">
