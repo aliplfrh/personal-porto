@@ -1448,6 +1448,35 @@ a:focus-visible,
 
 .admin-btn-ghost:hover { border-color: var(--border-strong); color: var(--text-primary); }
 
+.admin-tabs {
+  display: flex;
+  gap: var(--space-75);
+  margin-bottom: var(--space-500);
+  overflow-x: auto;
+  padding-bottom: var(--space-100);
+}
+
+.admin-tab {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: var(--space-75) var(--space-300);
+  border-radius: 999px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 300ms var(--ease-base), color 300ms var(--ease-base), border-color 300ms var(--ease-base);
+}
+
+.admin-tab:hover { border-color: var(--border-strong); color: var(--text-primary); }
+
+.admin-tab.active {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
 .admin-section {
   margin-bottom: var(--space-700);
 }
@@ -1527,6 +1556,128 @@ a:focus-visible,
 .admin-checkbox input {
   width: auto;
   accent-color: #ffffff;
+}
+
+.admin-btn-add-project {
+  width: auto;
+  display: inline-block;
+  border-style: solid;
+  margin-bottom: var(--space-300);
+}
+
+.admin-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+}
+
+.admin-project-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: var(--space-150, var(--space-100)) var(--space-200);
+  cursor: pointer;
+  transition: border-color 300ms var(--ease-base), background 300ms var(--ease-base);
+}
+
+.admin-project-row:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-surface-raised);
+}
+
+.admin-project-row-thumb {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-surface-raised);
+}
+
+.admin-project-row-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.admin-project-row-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-project-row-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-project-row-meta {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+.admin-project-row-delete {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  padding: var(--space-75);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 300ms var(--ease-base), background 300ms var(--ease-base);
+}
+
+.admin-project-row-delete:hover { color: #f87171; background: var(--bg-surface-higher); }
+
+.admin-empty-note {
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
+}
+
+.admin-back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: var(--space-300);
+  display: block;
+}
+
+.admin-btn-delete-project {
+  margin-top: var(--space-200);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Image upload field */
+.admin-image-field { margin-bottom: var(--space-200); }
+
+.admin-image-field-row {
+  display: flex;
+  gap: var(--space-200);
+  align-items: flex-start;
+}
+
+.admin-image-preview {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-subtle);
+}
+
+.admin-image-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.admin-image-field-controls {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
 }
 
 .admin-bottom-save {

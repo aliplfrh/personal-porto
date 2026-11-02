@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Trash2 } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
 import { SiteContent, ExperienceEntry, ToolEntry } from '../content/types';
 import { Project, ProjectCategory, PROJECT_CATEGORIES } from '../types';
+import ImageUploadField from '../components/ImageUploadField';
 
 const SESSION_KEY = 'admin_session';
 
@@ -34,7 +36,7 @@ function emptyTool(): ToolEntry {
 function emptyProject(): Project {
   return {
     id: `project-${Date.now()}`,
-    title: '',
+    title: 'Untitled project',
     categories: [],
     thumbnail: '',
     description: '',
@@ -44,6 +46,9 @@ function emptyProject(): Project {
     role: '',
   };
 }
+
+const TABS = ['Hero', 'About', 'Experience', 'Tools', 'Projects'] as const;
+type Tab = (typeof TABS)[number];
 
 const Admin: React.FC = () => {
   const { content, refresh } = useSiteContent();
@@ -55,8 +60,9 @@ const Admin: React.FC = () => {
 
   const [draft, setDraft] = useState<SiteContent>(content);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [activeTab, setActiveTab] = useState<Tab>('Projects');
+  const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
 
-  // Load the current live content into the draft once it arrives.
   useEffect(() => {
     setDraft(content);
   }, [content]);
@@ -104,9 +110,7 @@ const Admin: React.FC = () => {
         body: JSON.stringify(draft),
       });
       if (!res.ok) {
-        if (res.status === 401) {
-          handleLogout();
-        }
+        if (res.status === 401) handleLogout();
         setStatus('error');
         return;
       }
@@ -143,6 +147,27 @@ const Admin: React.FC = () => {
     );
   }
 
+  const editingProject = draft.projects.find((p) => p.id === editingProjectId) || null;
+
+  const updateEditingProject = (patch: Partial<Project>) => {
+    setDraft({
+      ...draft,
+      projects: draft.projects.map((p) => (p.id === editingProjectId ? { ...p, ...patch } : p)),
+    });
+  };
+
+  const addProject = () => {
+    const p = emptyProject();
+    setDraft({ ...draft, projects: [p, ...draft.projects] });
+    setEditingProjectId(p.id);
+  };
+
+  const deleteProject = (id: string) => {
+    if (!window.confirm('Delete this project? This takes effect once you save changes.')) return;
+    setDraft({ ...draft, projects: draft.projects.filter((p) => p.id !== id) });
+    if (editingProjectId === id) setEditingProjectId(null);
+  };
+
   return (
     <div className="admin-page">
       <div className="admin-topbar">
@@ -157,184 +182,256 @@ const Admin: React.FC = () => {
       </div>
       {status === 'error' && <p className="admin-error">Could not save. Try again.</p>}
 
-      <section className="admin-section">
-        <h2>Hero</h2>
-        <label>
-          Greeting
-          <input
-            value={draft.hero.greeting}
-            onChange={(e) => setDraft({ ...draft, hero: { ...draft.hero, greeting: e.target.value } })}
-          />
-        </label>
-        <label>
-          Status
-          <input
-            value={draft.hero.status}
-            onChange={(e) => setDraft({ ...draft, hero: { ...draft.hero, status: e.target.value } })}
-          />
-        </label>
-        <label>
-          Bio
-          <textarea
-            rows={3}
-            value={draft.hero.bio}
-            onChange={(e) => setDraft({ ...draft, hero: { ...draft.hero, bio: e.target.value } })}
-          />
-        </label>
-      </section>
+      <div className="admin-tabs">
+        {TABS.map((tab) => (
+          <button
+            key={tab}
+            className={`admin-tab ${activeTab === tab ? 'active' : ''}`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
 
-      <section className="admin-section">
-        <h2>About — bio paragraphs</h2>
-        {draft.about.bioParagraphs.map((p, i) => (
-          <div className="admin-row" key={i}>
+      {activeTab === 'Hero' && (
+        <section className="admin-section">
+          <label>
+            Greeting
+            <input
+              value={draft.hero.greeting}
+              onChange={(e) => setDraft({ ...draft, hero: { ...draft.hero, greeting: e.target.value } })}
+            />
+          </label>
+          <label>
+            Status
+            <input
+              value={draft.hero.status}
+              onChange={(e) => setDraft({ ...draft, hero: { ...draft.hero, status: e.target.value } })}
+            />
+          </label>
+          <label>
+            Bio
             <textarea
               rows={3}
-              value={p}
-              onChange={(e) => {
-                const next = [...draft.about.bioParagraphs];
-                next[i] = e.target.value;
-                setDraft({ ...draft, about: { bioParagraphs: next } });
-              }}
+              value={draft.hero.bio}
+              onChange={(e) => setDraft({ ...draft, hero: { ...draft.hero, bio: e.target.value } })}
             />
-            <button
-              className="admin-btn-remove"
-              onClick={() => {
-                const next = draft.about.bioParagraphs.filter((_, idx) => idx !== i);
-                setDraft({ ...draft, about: { bioParagraphs: next } });
-              }}
-            >
-              Remove
-            </button>
-          </div>
-        ))}
-        <button
-          className="admin-btn-add"
-          onClick={() => setDraft({ ...draft, about: { bioParagraphs: [...draft.about.bioParagraphs, ''] } })}
-        >
-          + Add paragraph
-        </button>
-      </section>
+          </label>
+        </section>
+      )}
 
-      {([
-        { key: 'workExperiences', label: 'Experience — Organization' },
-        { key: 'studyExperiences', label: 'Experience — Studies' },
-      ] as const).map(({ key, label }) => (
-        <section className="admin-section" key={key}>
-          <h2>{label}</h2>
-          {draft[key].map((item, i) => (
-            <div className="admin-card" key={item.id}>
-              <label>
-                Title
-                <input
-                  value={item.title}
-                  onChange={(e) => {
-                    const next = [...draft[key]];
-                    next[i] = { ...next[i], title: e.target.value };
-                    setDraft({ ...draft, [key]: next });
-                  }}
-                />
-              </label>
-              <label>
-                Subtitle
-                <input
-                  value={item.subtitle}
-                  onChange={(e) => {
-                    const next = [...draft[key]];
-                    next[i] = { ...next[i], subtitle: e.target.value };
-                    setDraft({ ...draft, [key]: next });
-                  }}
-                />
-              </label>
-              <label>
-                Date
-                <input
-                  value={item.date}
-                  onChange={(e) => {
-                    const next = [...draft[key]];
-                    next[i] = { ...next[i], date: e.target.value };
-                    setDraft({ ...draft, [key]: next });
-                  }}
-                />
-              </label>
-              <label>
-                Description (optional)
-                <textarea
-                  rows={2}
-                  value={item.description || ''}
-                  onChange={(e) => {
-                    const next = [...draft[key]];
-                    next[i] = { ...next[i], description: e.target.value };
-                    setDraft({ ...draft, [key]: next });
-                  }}
-                />
-              </label>
+      {activeTab === 'About' && (
+        <section className="admin-section">
+          <h2>Bio paragraphs</h2>
+          {draft.about.bioParagraphs.map((p, i) => (
+            <div className="admin-row" key={i}>
+              <textarea
+                rows={3}
+                value={p}
+                onChange={(e) => {
+                  const next = [...draft.about.bioParagraphs];
+                  next[i] = e.target.value;
+                  setDraft({ ...draft, about: { bioParagraphs: next } });
+                }}
+              />
               <button
                 className="admin-btn-remove"
-                onClick={() => setDraft({ ...draft, [key]: draft[key].filter((_, idx) => idx !== i) })}
+                onClick={() => {
+                  const next = draft.about.bioParagraphs.filter((_, idx) => idx !== i);
+                  setDraft({ ...draft, about: { bioParagraphs: next } });
+                }}
               >
-                Remove entry
+                Remove
               </button>
             </div>
           ))}
           <button
             className="admin-btn-add"
-            onClick={() => setDraft({ ...draft, [key]: [...draft[key], emptyExperience()] })}
+            onClick={() => setDraft({ ...draft, about: { bioParagraphs: [...draft.about.bioParagraphs, ''] } })}
           >
-            + Add entry
+            + Add paragraph
           </button>
         </section>
-      ))}
+      )}
 
-      <section className="admin-section">
-        <h2>Tools and technologies</h2>
-        {draft.tools.map((tool, i) => (
-          <div className="admin-row" key={i}>
-            <input
-              placeholder="Name"
-              value={tool.name}
-              onChange={(e) => {
-                const next = [...draft.tools];
-                next[i] = { ...next[i], name: e.target.value };
-                setDraft({ ...draft, tools: next });
-              }}
-            />
-            <input
-              placeholder="Icon URL"
-              value={tool.iconUrl}
-              onChange={(e) => {
-                const next = [...draft.tools];
-                next[i] = { ...next[i], iconUrl: e.target.value };
-                setDraft({ ...draft, tools: next });
-              }}
-            />
-            <button
-              className="admin-btn-remove"
-              onClick={() => setDraft({ ...draft, tools: draft.tools.filter((_, idx) => idx !== i) })}
-            >
-              Remove
-            </button>
+      {activeTab === 'Experience' && (
+        <>
+          {([
+            { key: 'workExperiences', label: 'Organization' },
+            { key: 'studyExperiences', label: 'Studies' },
+          ] as const).map(({ key, label }) => (
+            <section className="admin-section" key={key}>
+              <h2>{label}</h2>
+              {draft[key].map((item, i) => (
+                <div className="admin-card" key={item.id}>
+                  <label>
+                    Title
+                    <input
+                      value={item.title}
+                      onChange={(e) => {
+                        const next = [...draft[key]];
+                        next[i] = { ...next[i], title: e.target.value };
+                        setDraft({ ...draft, [key]: next });
+                      }}
+                    />
+                  </label>
+                  <label>
+                    Subtitle
+                    <input
+                      value={item.subtitle}
+                      onChange={(e) => {
+                        const next = [...draft[key]];
+                        next[i] = { ...next[i], subtitle: e.target.value };
+                        setDraft({ ...draft, [key]: next });
+                      }}
+                    />
+                  </label>
+                  <label>
+                    Date
+                    <input
+                      value={item.date}
+                      onChange={(e) => {
+                        const next = [...draft[key]];
+                        next[i] = { ...next[i], date: e.target.value };
+                        setDraft({ ...draft, [key]: next });
+                      }}
+                    />
+                  </label>
+                  <label>
+                    Description (optional)
+                    <textarea
+                      rows={2}
+                      value={item.description || ''}
+                      onChange={(e) => {
+                        const next = [...draft[key]];
+                        next[i] = { ...next[i], description: e.target.value };
+                        setDraft({ ...draft, [key]: next });
+                      }}
+                    />
+                  </label>
+                  <button
+                    className="admin-btn-remove"
+                    onClick={() => setDraft({ ...draft, [key]: draft[key].filter((_, idx) => idx !== i) })}
+                  >
+                    Remove entry
+                  </button>
+                </div>
+              ))}
+              <button
+                className="admin-btn-add"
+                onClick={() => setDraft({ ...draft, [key]: [...draft[key], emptyExperience()] })}
+              >
+                + Add entry
+              </button>
+            </section>
+          ))}
+        </>
+      )}
+
+      {activeTab === 'Tools' && (
+        <section className="admin-section">
+          {draft.tools.map((tool, i) => (
+            <div className="admin-row" key={i}>
+              <input
+                placeholder="Name"
+                value={tool.name}
+                onChange={(e) => {
+                  const next = [...draft.tools];
+                  next[i] = { ...next[i], name: e.target.value };
+                  setDraft({ ...draft, tools: next });
+                }}
+              />
+              <input
+                placeholder="Icon URL"
+                value={tool.iconUrl}
+                onChange={(e) => {
+                  const next = [...draft.tools];
+                  next[i] = { ...next[i], iconUrl: e.target.value };
+                  setDraft({ ...draft, tools: next });
+                }}
+              />
+              <button
+                className="admin-btn-remove"
+                onClick={() => setDraft({ ...draft, tools: draft.tools.filter((_, idx) => idx !== i) })}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button className="admin-btn-add" onClick={() => setDraft({ ...draft, tools: [...draft.tools, emptyTool()] })}>
+            + Add tool
+          </button>
+        </section>
+      )}
+
+      {activeTab === 'Projects' && !editingProject && (
+        <section className="admin-section">
+          <button className="admin-btn-add admin-btn-add-project" onClick={addProject}>
+            + Add project
+          </button>
+
+          <div className="admin-project-list">
+            {draft.projects.map((project) => (
+              <div
+                key={project.id}
+                className="admin-project-row"
+                onClick={() => setEditingProjectId(project.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setEditingProjectId(project.id);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="admin-project-row-thumb">
+                  {project.thumbnail && <img src={project.thumbnail} alt="" />}
+                </div>
+                <div className="admin-project-row-info">
+                  <span className="admin-project-row-title">{project.title || 'Untitled project'}</span>
+                  <span className="admin-project-row-meta">
+                    {project.categories
+                      .map((c) => PROJECT_CATEGORIES.find((pc) => pc.value === c)?.label)
+                      .filter(Boolean)
+                      .join(', ') || 'No category yet'}
+                    {' · '}
+                    {project.year}
+                  </span>
+                </div>
+                <button
+                  className="admin-project-row-delete"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteProject(project.id);
+                  }}
+                  aria-label={`Delete ${project.title}`}
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            ))}
+            {draft.projects.length === 0 && <p className="admin-empty-note">No projects yet.</p>}
           </div>
-        ))}
-        <button className="admin-btn-add" onClick={() => setDraft({ ...draft, tools: [...draft.tools, emptyTool()] })}>
-          + Add tool
-        </button>
-      </section>
+        </section>
+      )}
 
-      <section className="admin-section">
-        <h2>Portfolio projects</h2>
-        {draft.projects.map((project, i) => (
-          <div className="admin-card" key={project.id}>
+      {activeTab === 'Projects' && editingProject && (
+        <section className="admin-section">
+          <button className="admin-back-link admin-back-btn" onClick={() => setEditingProjectId(null)}>
+            ← Back to all projects
+          </button>
+
+          <div className="admin-card">
             <label>
               Title
               <input
-                value={project.title}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], title: e.target.value };
-                  setDraft({ ...draft, projects: next });
-                }}
+                value={editingProject.title}
+                onChange={(e) => updateEditingProject({ title: e.target.value })}
               />
             </label>
+
             <fieldset className="admin-fieldset">
               <legend>Categories (select all that apply)</legend>
               <div className="admin-checkbox-group">
@@ -342,15 +439,12 @@ const Admin: React.FC = () => {
                   <label key={value} className="admin-checkbox">
                     <input
                       type="checkbox"
-                      checked={project.categories.includes(value)}
+                      checked={editingProject.categories.includes(value)}
                       onChange={(e) => {
-                        const next = [...draft.projects];
-                        const current = next[i].categories;
                         const categories: ProjectCategory[] = e.target.checked
-                          ? [...current, value]
-                          : current.filter((c) => c !== value);
-                        next[i] = { ...next[i], categories };
-                        setDraft({ ...draft, projects: next });
+                          ? [...editingProject.categories, value]
+                          : editingProject.categories.filter((c) => c !== value);
+                        updateEditingProject({ categories });
                       }}
                     />
                     {label}
@@ -358,88 +452,67 @@ const Admin: React.FC = () => {
                 ))}
               </div>
             </fieldset>
+
             <label>
               Description
               <textarea
-                rows={2}
-                value={project.description}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], description: e.target.value };
-                  setDraft({ ...draft, projects: next });
-                }}
+                rows={3}
+                value={editingProject.description}
+                onChange={(e) => updateEditingProject({ description: e.target.value })}
               />
             </label>
+
             <label>
               Tags (comma separated)
               <input
-                value={project.tags.join(', ')}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], tags: e.target.value.split(',').map((t) => t.trim()).filter(Boolean) };
-                  setDraft({ ...draft, projects: next });
-                }}
+                value={editingProject.tags.join(', ')}
+                onChange={(e) =>
+                  updateEditingProject({ tags: e.target.value.split(',').map((t) => t.trim()).filter(Boolean) })
+                }
               />
             </label>
+
             <label>
               Client
               <input
-                value={project.client || ''}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], client: e.target.value };
-                  setDraft({ ...draft, projects: next });
-                }}
+                value={editingProject.client || ''}
+                onChange={(e) => updateEditingProject({ client: e.target.value })}
               />
             </label>
+
             <label>
               Year
               <input
-                value={String(project.year)}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], year: e.target.value };
-                  setDraft({ ...draft, projects: next });
-                }}
+                value={String(editingProject.year)}
+                onChange={(e) => updateEditingProject({ year: e.target.value })}
               />
             </label>
+
             <label>
               Role
               <input
-                value={project.role}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], role: e.target.value };
-                  setDraft({ ...draft, projects: next });
-                }}
+                value={editingProject.role}
+                onChange={(e) => updateEditingProject({ role: e.target.value })}
               />
             </label>
-            <label>
-              Thumbnail URL
-              <input
-                value={project.thumbnail}
-                onChange={(e) => {
-                  const next = [...draft.projects];
-                  next[i] = { ...next[i], thumbnail: e.target.value };
-                  setDraft({ ...draft, projects: next });
-                }}
-              />
-            </label>
-            <button
-              className="admin-btn-remove"
-              onClick={() => setDraft({ ...draft, projects: draft.projects.filter((_, idx) => idx !== i) })}
-            >
-              Remove project
+
+            <ImageUploadField
+              label="Thumbnail"
+              value={editingProject.thumbnail}
+              onChange={(url) => updateEditingProject({ thumbnail: url })}
+              token={session.token}
+            />
+
+            <button className="admin-btn-remove admin-btn-delete-project" onClick={() => deleteProject(editingProject.id)}>
+              Delete this project
             </button>
           </div>
-        ))}
-        <button
-          className="admin-btn-add"
-          onClick={() => setDraft({ ...draft, projects: [...draft.projects, emptyProject()] })}
-        >
-          + Add project
-        </button>
-      </section>
+
+          <button className="admin-back-link admin-back-btn" onClick={() => setEditingProjectId(null)}>
+            ← Back to all projects
+          </button>
+        </section>
+      )}
 
       <div className="admin-bottom-save">
         <button className="admin-btn-primary" onClick={handleSave} disabled={status === 'saving'}>
