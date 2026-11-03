@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# 🎬 ALIEF LUTFHA'UL RIDHO
+# 🎬 ALIEF LUTFA'UL RIDHO
 
 ### Visual Artist · Video Editor · Graphic Designer
 
@@ -36,7 +36,7 @@ Personal portfolio of **Alief Lutfha'ul Ridho** — a visual artist based in Ind
 ## 🖼️ Showcase
 
 <p align="center">
-  <img src="https://i.imgur.com/Ilb1brp.png" alt="Portfolio homepage screenshot" width="85%" />
+  <img src="https://i.imgur.com/AgzmbiF.png" alt="Portfolio homepage screenshot" width="85%" />
 </p>
 
 ### Featured Works
