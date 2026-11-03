@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { LogIn } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AmbientBackground from './components/AmbientBackground';
 import Hero from './components/Hero';
 import Statement from './components/Statement';
 import Reveal from './components/Reveal';
@@ -65,6 +66,7 @@ function App() {
         <LogIn size={16} />
       </Link>
 
+      <AmbientBackground />
       <Navbar />
 
       <AnimatePresence mode="wait">
