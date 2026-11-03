@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Github, Linkedin, Youtube, Instagram, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
+import WorldMap from './WorldMap';
 
 const Hero: React.FC = () => {
   const { content } = useSiteContent();
@@ -118,14 +119,10 @@ const Hero: React.FC = () => {
           </div>
 
           <div className="map-widget widget">
-            <div className="map-dotgrid" aria-hidden="true"></div>
-            <div className="map-pin">
-              <span className="map-pin-ring"></span>
-              <span className="map-pin-dot"></span>
-            </div>
+            <WorldMap />
             <div className="map-location">
               <img src="https://flagcdn.com/id.svg" alt="" />
-              <span>Indonesia</span>
+              <span>Malang, Indonesia</span>
             </div>
             <div className="map-overlay">
               {currentTime}
