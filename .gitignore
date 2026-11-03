@@ -12,6 +12,14 @@ dist
 dist-ssr
 *.local
 
+# Local environment and agent tooling
+.env
+.env.*
+!.env.example
+.bolt/
+.agents/
+skills-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
