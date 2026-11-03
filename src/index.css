@@ -1697,3 +1697,258 @@ a:focus-visible,
     scroll-behavior: auto !important;
   }
 }
+/* ============================================================
+   World map animations
+   ============================================================ */
+.world-map-svg {
+  width: 100%;
+  height: 100%;
+  color: var(--text-primary);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.05));
+}
+
+.malang-marker {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
+}
+
+.marker-ring {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 1.5;
+  opacity: 0.6;
+  animation: marker-pulse 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.marker-glow {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 1;
+  opacity: 0.3;
+  animation: marker-glow-fade 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.marker-dot {
+  fill: var(--text-primary);
+  animation: marker-blink 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes marker-pulse {
+  0% {
+    r: 12px;
+    opacity: 0.8;
+  }
+  100% {
+    r: 28px;
+    opacity: 0;
+  }
+}
+
+@keyframes marker-glow-fade {
+  0%, 100% {
+    opacity: 0.2;
+    r: 8px;
+  }
+  50% {
+    opacity: 0.5;
+    r: 12px;
+  }
+}
+
+@keyframes marker-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ============================================================
+   Enhanced widget hover (depth + shadow)
+   ============================================================ */
+.widget {
+  transition: 
+    border-color 300ms var(--ease-base),
+    transform 500ms var(--ease-base),
+    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.widget:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+.widget:active {
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   Social links — enhanced hover
+   ============================================================ */
+.social-link {
+  transition: 
+    background 300ms var(--ease-base),
+    border-color 300ms var(--ease-base),
+    color 300ms var(--ease-base),
+    transform 300ms var(--ease-base),
+    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.social-link:hover {
+  background: var(--bg-surface-higher);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.social-link:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+/* ============================================================
+   Tech items — smooth scale on hover
+   ============================================================ */
+.tech-item {
+  transition: 
+    background 300ms var(--ease-base),
+    border-color 300ms var(--ease-base),
+    transform 500ms var(--ease-base);
+}
+
+.tech-item:hover {
+  background: var(--bg-surface-higher);
+  border-color: var(--border-strong);
+  transform: translateY(-3px);
+}
+
+.tech-icon {
+  transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1), transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tech-item:hover .tech-icon {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+/* ============================================================
+   Buttons — consistent interaction
+   ============================================================ */
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ============================================================
+   Project cards — enhanced depth
+   ============================================================ */
+.project-card {
+  transition: 
+    border-color 300ms var(--ease-base),
+    transform 500ms var(--ease-base),
+    box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--border-strong);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+.project-card:active {
+  transform: translateY(-3px) scale(0.99);
+}
+
+.project-image img {
+  transition: transform 500ms var(--ease-base);
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.06);
+}
+
+/* ============================================================
+   Art controls — smooth interactions
+   ============================================================ */
+.art-btn {
+  transition: 
+    background 300ms var(--ease-base),
+    color 300ms var(--ease-base),
+    transform 300ms var(--ease-base),
+    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.art-btn:hover {
+  background: var(--bg-surface-higher);
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.art-btn:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   Map widget — improved spacing
+   ============================================================ */
+.map-widget {
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-location {
+  position: absolute;
+  left: var(--space-300);
+  bottom: var(--space-300);
+  display: flex;
+  align-items: center;
+  gap: var(--space-75);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: var(--space-75) var(--space-200);
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  transition: all 300ms var(--ease-base);
+}
+
+.map-location:hover {
+  background: rgba(0, 0, 0, 0.75);
+  border-color: var(--border-strong);
+}
+
+.map-overlay {
+  position: absolute;
+  top: var(--space-300);
+  right: var(--space-300);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  padding: var(--space-75) var(--space-200);
+  border-radius: 8px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ============================================================
+   Reduced motion support
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
