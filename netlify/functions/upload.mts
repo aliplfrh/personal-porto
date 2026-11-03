@@ -64,21 +64,31 @@ export default async (req: Request) => {
     });
   }
 
-  if (!file.type.startsWith('image/')) {
-    return new Response(JSON.stringify({ error: 'Only image files are allowed' }), {
+  const isImage = file.type.startsWith('image/');
+  const isPdf = file.type === 'application/pdf';
+
+  if (!isImage && !isPdf) {
+    return new Response(JSON.stringify({ error: 'Only image or PDF files are allowed' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
   if (file.size > MAX_SIZE) {
-    return new Response(JSON.stringify({ error: 'Image must be under 5MB' }), {
+    return new Response(JSON.stringify({ error: 'File must be under 5MB' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  const key = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extensionFor(file)}`;
+  // A fixed key (e.g. "resume") overwrites in place, so its public URL never changes.
+  // Without one, each upload gets a unique key so files never collide.
+  const requestedKey = form.get('key');
+  const key =
+    typeof requestedKey === 'string' && requestedKey.trim()
+      ? requestedKey.trim()
+      : `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extensionFor(file)}`;
+
   const store = getStore('site-assets');
   await store.set(key, file, { metadata: { contentType: file.type } });
 

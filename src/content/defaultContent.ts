@@ -2,6 +2,7 @@ import { SiteContent } from './types';
 import { projects } from '../data/projects';
 
 export const defaultContent: SiteContent = {
+  resumeUrl: '/resume.pdf',
   hero: {
     greeting: "Hey, I'm Alief",
     status: 'Available for work',

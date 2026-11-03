@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { useSiteContent } from '../content/SiteContentContext';
 import { ExperienceEntry } from '../content/types';
 
-const TimelineItem: React.FC<ExperienceEntry> = ({ date, title, subtitle, description }) => {
+const TimelineItem: React.FC<ExperienceEntry> = ({ date, title, subtitle, description, logoSrc }) => {
   return (
     <div className="timeline-item">
+      <span className="timeline-marker">
+        {logoSrc && <img src={logoSrc} alt="" />}
+      </span>
       <div className="timeline-date">{date}</div>
       <h4 className="timeline-title">{title}</h4>
       <div className="timeline-subtitle">{subtitle}</div>

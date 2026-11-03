@@ -47,7 +47,7 @@ function emptyProject(): Project {
   };
 }
 
-const TABS = ['Hero', 'About', 'Experience', 'Tools', 'Projects'] as const;
+const TABS = ['Hero', 'About', 'Experience', 'Tools', 'Projects', 'Resume'] as const;
 type Tab = (typeof TABS)[number];
 
 const Admin: React.FC = () => {
@@ -62,6 +62,8 @@ const Admin: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [activeTab, setActiveTab] = useState<Tab>('Projects');
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
+  const [resumeUploading, setResumeUploading] = useState(false);
+  const [resumeError, setResumeError] = useState('');
 
   useEffect(() => {
     setDraft(content);
@@ -119,6 +121,39 @@ const Admin: React.FC = () => {
       setTimeout(() => setStatus('idle'), 2500);
     } catch {
       setStatus('error');
+    }
+  };
+
+  const handleResumeUpload = async (file: File) => {
+    if (file.type !== 'application/pdf') {
+      setResumeError('Please choose a PDF file.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setResumeError('File must be under 5MB.');
+      return;
+    }
+    setResumeError('');
+    setResumeUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('key', 'resume');
+      const res = await fetch('/.netlify/functions/upload', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session?.token}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setResumeError(data.error || 'Upload failed.');
+        return;
+      }
+      setDraft((d) => ({ ...d, resumeUrl: data.url }));
+    } catch {
+      setResumeError('Could not reach the server.');
+    } finally {
+      setResumeUploading(false);
     }
   };
 
@@ -310,6 +345,16 @@ const Admin: React.FC = () => {
                       }}
                     />
                   </label>
+                  <ImageUploadField
+                    label={key === 'studyExperiences' ? 'University logo' : 'Organization logo'}
+                    value={item.logoSrc || ''}
+                    onChange={(url) => {
+                      const next = [...draft[key]];
+                      next[i] = { ...next[i], logoSrc: url };
+                      setDraft({ ...draft, [key]: next });
+                    }}
+                    token={session.token}
+                  />
                   <button
                     className="admin-btn-remove"
                     onClick={() => setDraft({ ...draft, [key]: draft[key].filter((_, idx) => idx !== i) })}
@@ -511,6 +556,39 @@ const Admin: React.FC = () => {
           <button className="admin-back-link admin-back-btn" onClick={() => setEditingProjectId(null)}>
             ← Back to all projects
           </button>
+        </section>
+      )}
+
+      {activeTab === 'Resume' && (
+        <section className="admin-section">
+          <div className="admin-card">
+            <p className="admin-resume-current">
+              Current resume:{' '}
+              <a href={draft.resumeUrl} target="_blank" rel="noopener noreferrer">
+                {draft.resumeUrl}
+              </a>
+            </p>
+            <input
+              id="resume-upload-input"
+              type="file"
+              accept="application/pdf"
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleResumeUpload(file);
+                e.target.value = '';
+              }}
+            />
+            <button
+              type="button"
+              className="admin-btn-ghost"
+              disabled={resumeUploading}
+              onClick={() => document.getElementById('resume-upload-input')?.click()}
+            >
+              {resumeUploading ? 'Uploading…' : 'Replace resume PDF'}
+            </button>
+            {resumeError && <p className="admin-error">{resumeError}</p>}
+          </div>
         </section>
       )}
 

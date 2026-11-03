@@ -6,6 +6,7 @@ export interface ExperienceEntry {
   title: string;
   subtitle: string;
   description?: string | null;
+  logoSrc?: string;
 }
 
 export interface ToolEntry {
@@ -14,6 +15,7 @@ export interface ToolEntry {
 }
 
 export interface SiteContent {
+  resumeUrl: string;
   hero: {
     greeting: string;
     status: string;

@@ -1,14 +1,17 @@
 import React from 'react';
 import { Github, Linkedin, Youtube, Instagram, FileText } from 'lucide-react';
+import { useSiteContent } from '../content/SiteContentContext';
 
 const Footer: React.FC = () => {
+  const { content } = useSiteContent();
+
   return (
     <footer className="footer">
       <div className="container">
         <h2 className="footer-heading">Something in mind?</h2>
         <p className="footer-sub">Open to film, editing, and design collaborations.</p>
 
-        <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="footer-email">
+        <a href={content.resumeUrl} target="_blank" rel="noopener noreferrer" className="footer-email">
           View resume
         </a>
 
@@ -25,7 +28,7 @@ const Footer: React.FC = () => {
           <a href="https://instagram.com/aliplfrh" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile">
             <Instagram size={20} />
           </a>
-          <a href="/cv.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume">
+          <a href={content.resumeUrl} target="_blank" rel="noopener noreferrer" aria-label="Resume">
             <FileText size={20} />
           </a>
         </div>

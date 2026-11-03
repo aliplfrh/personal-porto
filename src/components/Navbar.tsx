@@ -68,6 +68,15 @@ const Navbar: React.FC = () => {
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav">
+        <a
+          href="#about"
+          className={`nav-link ${isCurrent('about') ? 'current' : ''}`}
+          aria-current={isCurrent('about') ? 'page' : undefined}
+          onClick={(e) => { e.preventDefault(); goToSection('about'); }}
+        >
+          About
+        </a>
+
         <Link
           to="/"
           className="logo"
@@ -81,38 +90,14 @@ const Navbar: React.FC = () => {
           aliplfrh
         </Link>
 
-        <ul className="nav-links">
-          <li>
-            <a
-              href="#home"
-              className={isCurrent('home') ? 'current' : ''}
-              aria-current={isCurrent('home') ? 'page' : undefined}
-              onClick={(e) => { e.preventDefault(); goToSection('home'); }}
-            >
-              Home
-            </a>
-          </li>
-          <li>
-            <a
-              href="#about"
-              className={isCurrent('about') ? 'current' : ''}
-              aria-current={isCurrent('about') ? 'page' : undefined}
-              onClick={(e) => { e.preventDefault(); goToSection('about'); }}
-            >
-              About
-            </a>
-          </li>
-          <li>
-            <Link
-              to="/portofolio"
-              className={isCurrent('works') ? 'current' : ''}
-              aria-current={isCurrent('works') ? 'page' : undefined}
-              onClick={() => setIsOpen(false)}
-            >
-              Works
-            </Link>
-          </li>
-        </ul>
+        <Link
+          to="/portofolio"
+          className={`nav-link ${isCurrent('works') ? 'current' : ''}`}
+          aria-current={isCurrent('works') ? 'page' : undefined}
+          onClick={() => setIsOpen(false)}
+        >
+          Works
+        </Link>
 
         <button
           onClick={() => setIsOpen((v) => !v)}
@@ -148,9 +133,6 @@ const Navbar: React.FC = () => {
             variants={menuVariants}
           >
             <ul className="mobile-nav-links">
-              <motion.li variants={linkVariants}>
-                <a href="#home" onClick={(e) => { e.preventDefault(); goToSection('home'); }}>Home</a>
-              </motion.li>
               <motion.li variants={linkVariants}>
                 <a href="#about" onClick={(e) => { e.preventDefault(); goToSection('about'); }}>About</a>
               </motion.li>
