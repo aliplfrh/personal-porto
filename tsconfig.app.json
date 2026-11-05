@@ -14,6 +14,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* Import alias — mirrors the "@" resolve.alias in vite.config.ts so
+       components in src/components/ui can be imported as "@/components/ui/...". */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

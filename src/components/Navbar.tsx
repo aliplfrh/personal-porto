@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RandomLetterSwap } from '@/components/ui/random-letter-swap';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+// Hover scramble timing for the pill nav labels.
+const SWAP_TRANSITION = { duration: 0.6, type: 'spring' } as const;
+const SWAP_STAGGER = 0.025;
 
 const menuVariants = {
   hidden: { opacity: 0 },
@@ -134,7 +139,11 @@ const Navbar: React.FC = () => {
           aria-current={isCurrent('about') ? 'location' : undefined}
           onClick={(e) => { e.preventDefault(); goToSection('about'); }}
         >
-          About
+          <RandomLetterSwap
+            label="About"
+            staggerDuration={SWAP_STAGGER}
+            transition={SWAP_TRANSITION}
+          />
         </a>
 
         <Link
@@ -147,7 +156,11 @@ const Navbar: React.FC = () => {
             }
           }}
         >
-          aliplfrh
+          <RandomLetterSwap
+            label="aliplfrh"
+            staggerDuration={SWAP_STAGGER}
+            transition={SWAP_TRANSITION}
+          />
         </Link>
 
         <Link
@@ -156,7 +169,11 @@ const Navbar: React.FC = () => {
           aria-current={isCurrent('works') ? 'location' : undefined}
           onClick={() => setIsOpen(false)}
         >
-          Works
+          <RandomLetterSwap
+            label="Works"
+            staggerDuration={SWAP_STAGGER}
+            transition={SWAP_TRANSITION}
+          />
         </Link>
 
         <button
