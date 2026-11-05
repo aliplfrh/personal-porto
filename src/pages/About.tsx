@@ -34,7 +34,7 @@ const ExperienceSection: React.FC<{ workExperiences: ExperienceEntry[]; studyExp
           onClick={() => setActiveTab('work')}
           className={`tab-btn ${activeTab === 'work' ? 'active' : ''}`}
         >
-          Organization
+          Organisation
         </button>
         <button
           onClick={() => setActiveTab('studies')}
