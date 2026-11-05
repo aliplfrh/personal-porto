@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -24,6 +24,26 @@ const word = {
 };
 
 const Statement: React.FC = () => {
+  const reduceMotion = useReducedMotion();
+
+  // Without motion the words must render at full opacity — never left dimmed.
+  if (reduceMotion) {
+    return (
+      <div className="statement">
+        <div className="container">
+          <p className="statement-text">
+            {lines.map((line, lineIndex) => (
+              <React.Fragment key={lineIndex}>
+                {line}
+                {lineIndex < lines.length - 1 ? <br /> : null}
+              </React.Fragment>
+            ))}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="statement">
       <div className="container">

@@ -41,7 +41,8 @@
   /* Text */
   --text-primary: #ffffff;
   --text-secondary: #a3a3a3;
-  --text-tertiary: #6e6e6e;
+  /* Raised from #6e6e6e so 12px labels clear WCAG AA (4.5:1) on widget surfaces */
+  --text-tertiary: #8a8a8a;
 
   /* Borders */
   --border-subtle: rgba(255, 255, 255, 0.08);
@@ -54,6 +55,11 @@
 
   /* Motion */
   --ease-base: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Scroll position, written by useScrollProgress() and consumed by CSS so
+     scroll-linked motion never triggers a React render. */
+  --scroll-y: 0px;
+  --scroll-progress: 0;
 }
 
 /* ============================================================
@@ -67,6 +73,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keep anchored sections clear of the fixed floating pill nav */
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -138,11 +146,22 @@ a { color: inherit; }
 /* Focus styles */
 button:focus-visible,
 a:focus-visible,
-[role="button"]:focus-visible {
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="tabpanel"]:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* Programmatic focus target after a route change — no ring for pointer users */
+main:focus { outline: none; }
+
+/* Anchor targets are large blocks; the scroll itself is the feedback */
+section:focus { outline: none; }
+
+/* Page scroll is locked while the mobile menu overlay is up */
+body.nav-open { overflow: hidden; }
 
 /* Selection */
 ::selection {
@@ -409,6 +428,54 @@ a:focus-visible,
 
 .social-link:active { transform: scale(0.96); }
 
+/* Hero actions — the direct path from the intro to the work */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-100);
+  margin-top: var(--space-300);
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-75);
+  padding: var(--space-100) var(--space-200);
+  border-radius: 10px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--border-subtle);
+  transition: background 300ms var(--ease-base), border-color 300ms var(--ease-base), color 300ms var(--ease-base), transform 300ms var(--ease-base);
+}
+
+.hero-cta-primary {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-base);
+}
+
+.hero-cta-primary:hover {
+  background: #d4d4d4;
+  border-color: #d4d4d4;
+  transform: translateY(-2px);
+}
+
+.hero-cta-secondary {
+  background: var(--bg-surface-raised);
+  color: var(--text-secondary);
+}
+
+.hero-cta-secondary:hover {
+  background: var(--bg-surface-higher);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.hero-cta:active { transform: scale(0.98); }
+
 .map-widget {
   grid-column: span 8;
   position: relative;
@@ -490,6 +557,8 @@ a:focus-visible,
 }
 
 .tech-widget { grid-column: span 4; padding: var(--space-300); }
+/* Kept at the previous h3 size — only the heading level changed */
+.tech-widget h2 { font-size: clamp(var(--text-xl), 2vw, var(--text-2xl)); }
 
 .tech-grid {
   display: grid;
@@ -1169,7 +1238,7 @@ a:focus-visible,
   margin-bottom: var(--space-500);
 }
 
-.work-block h3 {
+.work-block h2 {
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1232,7 +1301,7 @@ a:focus-visible,
   top: 100px;
 }
 
-.work-info h3 {
+.work-info h2 {
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -2064,5 +2133,90 @@ button:active:not(:disabled) {
 
   .location-pulse {
     opacity: 0.35;
+  }
+}
+
+/* ============================================================
+   Scroll progress rail
+   A 1px hairline that fills with the document. Reading position at a
+   glance is feedback, not decoration, so it stays fixed and non-interactive.
+   ============================================================ */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 1200;
+  pointer-events: none;
+}
+
+.scroll-progress-bar {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(var(--scroll-progress, 0));
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.55) 35%, rgba(255, 255, 255, 0.9));
+  will-change: transform;
+}
+
+/* ============================================================
+   Hero entrance — staggered cascade
+   The widgets rise in sequence instead of appearing all at once. Uses
+   `backwards` fill only: a `forwards`/`both` fill would keep the final
+   transform locked and break .widget:hover, which also animates transform.
+   ============================================================ */
+.hero-grid > .widget {
+  animation: hero-widget-in 620ms var(--ease-base) backwards;
+}
+
+.hero-grid > .widget:nth-child(1) { animation-delay: 40ms; }
+.hero-grid > .widget:nth-child(2) { animation-delay: 130ms; }
+.hero-grid > .widget:nth-child(3) { animation-delay: 220ms; }
+.hero-grid > .widget:nth-child(4) { animation-delay: 310ms; }
+.hero-grid > .widget:nth-child(5) { animation-delay: 400ms; }
+.hero-grid > .widget:nth-child(6) { animation-delay: 490ms; }
+
+@keyframes hero-widget-in {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ============================================================
+   Scroll-linked parallax — decorative layers only, never text.
+   Amplitudes stay small; the surrounding overflow:hidden frames absorb
+   the shift so no edge is ever exposed.
+   ============================================================ */
+.works-bg-image {
+  will-change: transform;
+  transform: scale(1.15) translate3d(0, calc(var(--scroll-progress, 0) * 48px), 0);
+}
+
+.work-hero img {
+  transform: scale(1.08) translate3d(0, calc(var(--scroll-progress, 0) * -28px), 0);
+}
+
+/* ============================================================
+   Reduced motion — kill the ambient and scroll-linked layers outright.
+   Reveal/Statement already short-circuit in JS; these cover the CSS paths.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid > .widget {
+    animation: none;
+  }
+
+  .scroll-progress-bar {
+    transform: scaleX(1);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .works-bg-image {
+    transform: scale(1.15);
+    will-change: auto;
+  }
+
+  .work-hero img {
+    transform: none;
   }
 }

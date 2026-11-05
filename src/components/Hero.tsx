@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Github, Linkedin, Youtube, Instagram, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Github, Linkedin, Youtube, Instagram, FileText, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useSiteContent } from '../content/SiteContentContext';
 import WorldMap from './WorldMap';
+import Clock from './Clock';
 
 const Hero: React.FC = () => {
   const { content } = useSiteContent();
-  const [currentTime, setCurrentTime] = useState('');
   const [currentArt, setCurrentArt] = useState(0);
 
   const artworks = [
@@ -13,24 +14,6 @@ const Hero: React.FC = () => {
     'https://i.imgur.com/bR28g7Z.png',
     'https://upload.wikimedia.org/wikipedia/commons/b/bb/Logo_Universitas_Brawijaya.svg'
   ];
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZone: 'Asia/Jakarta',
-        hour12: false
-      };
-      const timeString = now.toLocaleTimeString('en-US', options);
-      setCurrentTime(`${timeString} WIB`);
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   const nextArt = () => {
     setCurrentArt((prev) => (prev + 1) % artworks.length);
@@ -48,7 +31,7 @@ const Hero: React.FC = () => {
             <div className="profile-avatar">
               <img
                 src="https://i.imgur.com/K35klRx.jpeg"
-                alt="Profile"
+                alt="Alief Lutfa'ul Ridho"
               />
             </div>
             <div className="profile-info">
@@ -67,6 +50,21 @@ const Hero: React.FC = () => {
                   alt="Indonesia flag"
                 />
                 <span>Indonesia</span>
+              </div>
+              <div className="hero-actions">
+                <Link to="/portofolio" className="hero-cta hero-cta-primary">
+                  View works
+                  <ArrowUpRight size={16} />
+                </Link>
+                <a
+                  href={content.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-cta hero-cta-secondary"
+                >
+                  Resume
+                  <FileText size={16} />
+                </a>
               </div>
               <div className="social-links">
                 <a
@@ -124,13 +122,11 @@ const Hero: React.FC = () => {
               <img src="https://flagcdn.com/id.svg" alt="" />
               <span>Malang, Indonesia</span>
             </div>
-            <div className="map-overlay">
-              {currentTime}
-            </div>
+            <Clock />
           </div>
 
           <div className="tech-widget widget">
-            <h3>Tech Stack</h3>
+            <h2>Tech Stack</h2>
             <div className="tech-grid">
               <div className="tech-item">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects" className="tech-icon" />
@@ -182,10 +178,17 @@ const Hero: React.FC = () => {
           </div>
 
           <div className="art-widget widget">
-            <div className="art-image">
-              <img src={artworks[currentArt]} alt="Artwork" />
+            <div
+              className="art-image"
+              role="group"
+              aria-roledescription="carousel"
+              aria-label="Selected artwork"
+            >
+              <img src={artworks[currentArt]} alt={`Artwork ${currentArt + 1} of ${artworks.length} by aliplfrh`} />
             </div>
-            <p className="art-label">by: aliplfrh</p>
+            <p className="art-label" aria-live="polite">
+              {`by: aliplfrh — ${currentArt + 1}/${artworks.length}`}
+            </p>
             <div className="art-controls">
               <button className="art-btn" onClick={prevArt} aria-label="Previous artwork">
                 <ChevronLeft size={18} />

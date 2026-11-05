@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
 import { PROJECT_CATEGORIES } from '../types';
+import Reveal from '../components/Reveal';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -44,47 +45,56 @@ const WorkDetail: React.FC = () => {
         <div className="work-main">
           <h1 className="gradient-heading">{project.title}</h1>
 
-          <div className="work-block">
-            <h3>Description</h3>
-            <p>{project.description}</p>
-          </div>
+          <Reveal from="fade">
+            <div className="work-block">
+              <h2>Description</h2>
+              <p>{project.description}</p>
+            </div>
+          </Reveal>
 
           {project.role && (
-            <div className="work-block">
-              <h3>Credits</h3>
-              <div className="work-credit-row">
-                <span>Role</span>
-                <span>{project.role}</span>
+            <Reveal from="fade" delay={1}>
+              <div className="work-block">
+                <h2>Credits</h2>
+                <div className="work-credit-row">
+                  <span>Role</span>
+                  <span>{project.role}</span>
+                </div>
               </div>
-            </div>
+            </Reveal>
           )}
 
           {project.streamableId && (
-            <a
-              href={`https://streamable.com/${project.streamableId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="work-watch-link"
-            >
-              Watch the film
-              <ExternalLink size={16} />
-            </a>
+            <Reveal from="fade" delay={2}>
+              <a
+                href={`https://streamable.com/${project.streamableId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="work-watch-link"
+              >
+                Watch the film
+                <ExternalLink size={16} />
+              </a>
+            </Reveal>
           )}
 
           {project.images && project.images.length > 0 && (
-            <div className="work-block">
-              <h3>Gallery</h3>
-              <div className="work-gallery">
-                {project.images.map((img, i) => (
-                  <img key={i} src={img} alt={`${project.title} — frame ${i + 1}`} loading="lazy" />
-                ))}
+            <Reveal from="fade" delay={3}>
+              <div className="work-block">
+                <h2>Gallery</h2>
+                <div className="work-gallery">
+                  {project.images.map((img, i) => (
+                    <img key={i} src={img} alt={`${project.title} — frame ${i + 1}`} loading="lazy" />
+                  ))}
+                </div>
               </div>
-            </div>
+            </Reveal>
           )}
         </div>
 
-        <aside className="work-info">
-          <h3>Info</h3>
+        <Reveal from="left" amount={0.1}>
+          <aside className="work-info">
+          <h2>Info</h2>
           {project.client && (
             <div className="work-info-row">
               <span>Client</span>
@@ -115,25 +125,28 @@ const WorkDetail: React.FC = () => {
               </span>
             </div>
           )}
-        </aside>
+          </aside>
+        </Reveal>
       </div>
 
-      <nav className="work-nav" aria-label="More works">
-        <Link to={`/portofolio/${prev.id}`} className="work-nav-link work-nav-prev">
-          <ArrowLeft size={16} />
-          <div>
-            <span className="work-nav-label">Previous</span>
-            <span className="work-nav-title">{prev.title}</span>
-          </div>
-        </Link>
-        <Link to={`/portofolio/${next.id}`} className="work-nav-link work-nav-next">
-          <div>
-            <span className="work-nav-label">Next</span>
-            <span className="work-nav-title">{next.title}</span>
-          </div>
-          <ArrowRight size={16} />
-        </Link>
-      </nav>
+      <Reveal from="fade" amount={0.1}>
+        <nav className="work-nav" aria-label="More works">
+          <Link to={`/portofolio/${prev.id}`} className="work-nav-link work-nav-prev">
+            <ArrowLeft size={16} />
+            <div>
+              <span className="work-nav-label">Previous</span>
+              <span className="work-nav-title">{prev.title}</span>
+            </div>
+          </Link>
+          <Link to={`/portofolio/${next.id}`} className="work-nav-link work-nav-next">
+            <div>
+              <span className="work-nav-label">Next</span>
+              <span className="work-nav-title">{next.title}</span>
+            </div>
+            <ArrowRight size={16} />
+          </Link>
+        </nav>
+      </Reveal>
     </motion.div>
   );
 };

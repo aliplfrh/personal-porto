@@ -1,18 +1,142 @@
-.ambient-pointer-glow {
+.ambient-scene {
   position: fixed;
-  top: -220px;
-  left: -220px;
-  width: 440px;
-  height: 440px;
-  z-index: 0;
+  inset: -10vh -10vw;
+  /* Negative so it paints above the canvas background but below all in-flow
+     content. A z-index of 0 on a positioned element would sit on top of the
+     widgets and wash them out. */
+  z-index: -1;
   pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.045), transparent 70%);
-  transition: opacity 300ms ease;
+  overflow: hidden;
+  will-change: transform;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@media (hover: none), (prefers-reduced-motion: reduce) {
-  .ambient-pointer-glow {
-    display: none;
+.ambient-scene::before,
+.ambient-scene::after {
+  content: '';
+  position: absolute;
+  width: min(52vw, 680px);
+  height: min(52vw, 680px);
+  border-radius: 50%;
+  opacity: 0.42;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+.ambient-scene::before {
+  top: 3%;
+  left: 6%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 68%);
+  animation: ambient-drift-a 18s ease-in-out infinite alternate;
+}
+
+.ambient-scene::after {
+  right: 3%;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(120, 120, 120, 0.06), transparent 70%);
+  animation: ambient-drift-b 23s ease-in-out 1s infinite alternate;
+}
+
+.ambient-light {
+  position: absolute;
+  top: 18%;
+  right: 20%;
+  width: min(32vw, 420px);
+  height: min(32vw, 420px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.045), transparent 70%);
+  filter: blur(60px);
+  animation: ambient-breathe 10s ease-in-out infinite;
+}
+
+.ambient-grid-light {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(110deg, transparent 25%, rgba(255, 255, 255, 0.026), transparent 60%);
+  background-size: 180% 100%;
+  animation: ambient-sweep 20s ease-in-out infinite;
+}
+
+.ambient-scene.is-paused,
+.ambient-scene.is-paused::before,
+.ambient-scene.is-paused::after,
+.ambient-scene.is-paused .ambient-light,
+.ambient-scene.is-paused .ambient-grid-light {
+  animation-play-state: paused;
+}
+
+.motion-toggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  color: var(--text-tertiary);
+  background: rgba(24, 24, 24, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.motion-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  background: var(--bg-surface-raised);
+  transform: translateY(-2px);
+}
+
+.motion-toggle:active { transform: translateY(0) scale(0.96); }
+
+/* Keep the control out of the way while the full-screen menu is up. */
+body.nav-open .motion-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes ambient-drift-a {
+  from { transform: translate3d(-4%, -2%, 0) scale(0.96); }
+  to { transform: translate3d(9%, 8%, 0) scale(1.06); }
+}
+
+@keyframes ambient-drift-b {
+  from { transform: translate3d(5%, 5%, 0) scale(1); }
+  to { transform: translate3d(-8%, -7%, 0) scale(1.08); }
+}
+
+@keyframes ambient-breathe {
+  0%, 100% { opacity: 0.28; transform: scale(0.94); }
+  50% { opacity: 0.52; transform: scale(1.06); }
+}
+
+@keyframes ambient-sweep {
+  0%, 100% { background-position: 120% 0; opacity: 0.35; }
+  50% { background-position: -20% 0; opacity: 0.8; }
+}
+
+@media (max-width: 768px) {
+  .ambient-scene { inset: -5vh -25vw; }
+  .ambient-scene::before,
+  .ambient-scene::after { width: 80vw; height: 80vw; filter: blur(64px); }
+  .ambient-light { width: 60vw; height: 60vw; }
+  .motion-toggle { right: 14px; bottom: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-scene,
+  .ambient-scene::before,
+  .ambient-scene::after,
+  .ambient-light,
+  .ambient-grid-light {
+    animation: none;
+    transition: none;
   }
+
+  .motion-toggle { display: none; }
 }
