@@ -1,140 +1,134 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
+import { GraduationCap, MapPin } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
 import { ExperienceEntry } from '../content/types';
 import Reveal from '../components/Reveal';
+import '../components/ProfileSections.css';
 
-const TimelineItem: React.FC<ExperienceEntry> = ({ date, title, subtitle, description, logoSrc }) => {
-  return (
-    <div className="timeline-item">
-      <span className="timeline-marker">
-        {logoSrc && <img src={logoSrc} alt="" />}
-      </span>
-      <div className="timeline-date">{date}</div>
-      <h4 className="timeline-title">{title}</h4>
-      <div className="timeline-subtitle">{subtitle}</div>
-      {description && (
-        <p className="timeline-description">{description}</p>
-      )}
-    </div>
-  );
+// Up to two letters from the entry name, used as a monochrome watermark until a
+// real logo is uploaded in the admin panel.
+const initialsOf = (title: string) => {
+  const letters = title
+    .split(/\s+/)
+    .map((word) => word.match(/\p{L}/u)?.[0])
+    .filter((letter): letter is string => Boolean(letter));
+  if (letters.length === 0) return '';
+  return (letters[0] + (letters.length > 1 ? letters[letters.length - 1] : '')).toUpperCase();
 };
 
-const ExperienceSection: React.FC<{ workExperiences: ExperienceEntry[]; studyExperiences: ExperienceEntry[] }> = ({
-  workExperiences,
-  studyExperiences,
-}) => {
-  const [activeTab, setActiveTab] = useState('studies');
-  const experiencesToShow = activeTab === 'studies' ? studyExperiences : workExperiences;
-
-  const tabs = [
-    { id: 'work', label: 'Organisation' },
-    { id: 'studies', label: 'Studies' },
-  ];
-
-  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
-
-  // Roving focus: Left/Right (and Home/End) move between tabs, per WAI-ARIA tabs pattern.
-  const onTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
-    const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
-    if (!keys.includes(event.key)) return;
-    event.preventDefault();
-
-    const nextIndex =
-      event.key === 'Home'
-        ? 0
-        : event.key === 'End'
-          ? tabs.length - 1
-          : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-
-    const nextTab = tabs[nextIndex];
-    setActiveTab(nextTab.id);
-    tabRefs.current[nextTab.id]?.focus();
-  };
-
-  return (
-    <div className="experience">
-      <h3>Experience</h3>
-
-      <div className="tabs" role="tablist" aria-label="Experience type">
-        {tabs.map((tab, index) => (
-          <button
-            key={tab.id}
-            ref={(el) => { tabRefs.current[tab.id] = el; }}
-            id={`tab-${tab.id}`}
-            role="tab"
-            aria-selected={activeTab === tab.id}
-            aria-controls="experience-panel"
-            tabIndex={activeTab === tab.id ? 0 : -1}
-            onClick={() => setActiveTab(tab.id)}
-            onKeyDown={(event) => onTabKeyDown(event, index)}
-            className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      <div
-        id="experience-panel"
-        role="tabpanel"
-        aria-labelledby={`tab-${activeTab}`}
-        tabIndex={0}
-        className="timeline"
-      >
-        {experiencesToShow.map((item, index) => (
-          <Reveal key={item.id} delay={index} from="left">
-            <TimelineItem {...item} />
-          </Reveal>
-        ))}
-      </div>
-    </div>
-  );
-};
+const ExperienceList: React.FC<{ items: ExperienceEntry[] }> = ({ items }) => (
+  <ul className="prf-history-list">
+    {items.map((item, index) => (
+      <li key={item.id}>
+        <Reveal delay={index % 3}>
+          <article className="prf-history-card">
+            <div className="prf-history-watermark" aria-hidden="true">
+              {item.logoSrc ? (
+                <img
+                  src={item.logoSrc}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                  onError={(event) => { event.currentTarget.hidden = true; }}
+                />
+              ) : (
+                <span className="prf-history-watermark-mark">{initialsOf(item.title)}</span>
+              )}
+            </div>
+            <p className="prf-history-date">{item.date}</p>
+            <div className="prf-history-identity">
+              <div>
+                <h4 className="prf-history-title">{item.title}</h4>
+                <p className="prf-history-subtitle">{item.subtitle}</p>
+              </div>
+            </div>
+            {item.description && <p className="prf-history-description">{item.description}</p>}
+          </article>
+        </Reveal>
+      </li>
+    ))}
+  </ul>
+);
 
 const About: React.FC = () => {
   const { content } = useSiteContent();
+  const studyEntry = content.studyExperiences[0];
+  const stats = [
+    { label: 'Projects in portfolio', value: content.projects.length },
+    { label: 'Creative tools', value: content.tools.length },
+    { label: 'Organisation experiences', value: content.workExperiences.length },
+  ];
 
   return (
-    <div className="about section">
-      <div className="container">
-        <Reveal from="right">
-          <div className="about-content">
-            <div className="about-text">
-              <h2 className="gradient-heading">About me</h2>
-              {content.about.bioParagraphs.map((paragraph, i) => (
-                <p key={i}>{paragraph}</p>
+    <div className="prf-section prf-about-section">
+      <div className="prf-container">
+        <Reveal>
+          <p className="prf-eyebrow"><span>About me</span></p>
+        </Reveal>
+
+        <div className="prf-about-top">
+          <Reveal className="prf-reveal-block">
+            <h2 className="prf-about-statement">
+              Cinematic edits.<br />
+              Expressive design.<br />
+              <span>Stories that connect.</span>
+            </h2>
+          </Reveal>
+
+          <div className="prf-about-detail">
+            <div className="prf-about-bio">
+              {content.about.bioParagraphs.map((paragraph, index) => (
+                <Reveal key={index} delay={index % 3}>
+                  <p>{paragraph}</p>
+                </Reveal>
               ))}
             </div>
-
-            <div className="about-image">
-              <img
-                src="https://i.imgur.com/K35klRx.jpeg"
-                alt="About me"
-              />
-            </div>
+            <Reveal delay={1}>
+              <ul className="prf-about-pills">
+                <li className="prf-about-pill">
+                  <MapPin size={14} aria-hidden="true" />
+                  <span>Malang, Indonesia</span>
+                </li>
+                {studyEntry && (
+                  <li className="prf-about-pill">
+                    <GraduationCap size={14} aria-hidden="true" />
+                    <span>{studyEntry.title} · {studyEntry.subtitle}</span>
+                  </li>
+                )}
+              </ul>
+            </Reveal>
           </div>
+        </div>
+
+        <Reveal>
+          <dl className="prf-stats">
+            {stats.map((stat) => (
+              <div className="prf-stat" key={stat.label}>
+                <dt>{stat.label}</dt>
+                <dd>{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
         </Reveal>
 
-        <Reveal delay={1}>
-          <ExperienceSection
-            workExperiences={content.workExperiences}
-            studyExperiences={content.studyExperiences}
-          />
+        <Reveal>
+          <h2 className="prf-history-section-heading">Experience &amp; education</h2>
         </Reveal>
-
-        <Reveal delay={2}>
-          <div className="tools">
-            <h3>Tools and technologies</h3>
-            <div className="tools-grid">
-              {content.tools.map((tool, i) => (
-                <div className="tool-item" key={i}>
-                  <img src={tool.iconUrl} alt={tool.name} />
-                  <span>{tool.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
+        <div className="prf-history-grid">
+          <section aria-labelledby="prf-experience-heading">
+            <Reveal>
+              <h3 className="prf-history-heading" id="prf-experience-heading">Organisation</h3>
+            </Reveal>
+            <ExperienceList items={content.workExperiences} />
+          </section>
+          <section aria-labelledby="prf-education-heading">
+            <Reveal delay={1}>
+              <h3 className="prf-history-heading" id="prf-education-heading">Education</h3>
+            </Reveal>
+            <ExperienceList items={content.studyExperiences} />
+          </section>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,22 @@
+.hwf-root {
+  --hwf-ink: #a3a3a3;
+  --hwf-warm: #ffffff;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.hwf-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hwf-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

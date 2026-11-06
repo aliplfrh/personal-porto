@@ -1,13 +1,14 @@
 import React from 'react';
 import { Github, Linkedin, Youtube, Instagram, FileText } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
+import HalftoneWordmarkFooter from '@/components/ui/halftone-wordmark-footer';
 
 const Footer: React.FC = () => {
   const { content } = useSiteContent();
 
   return (
-    <footer className="footer">
-      <div className="container">
+    <HalftoneWordmarkFooter className="footer">
+      <div className="container footer-content">
         <h2 className="footer-heading">Something in mind?</h2>
         <p className="footer-sub">Open to film, editing, and design collaborations.</p>
 
@@ -37,7 +38,7 @@ const Footer: React.FC = () => {
           <span>&copy; {new Date().getFullYear()} Alief Lutfa'ul Ridho</span>
         </div>
       </div>
-    </footer>
+    </HalftoneWordmarkFooter>
   );
 };
 
