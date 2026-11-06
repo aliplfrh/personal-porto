@@ -1,0 +1,139 @@
+/* Glass Prism Hero — adapted from the registry component to this codebase's
+   plain-CSS monochrome system (no Tailwind). Colors come from the site tokens
+   so the shader reads a pure black stage with white foreground. */
+
+.gph-section {
+  position: relative;
+  width: 100%;
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* Sticky stage: the scene holds while the section's extra height scrolls by,
+   which is what turns the prism and dims the light. The scene itself never
+   fades — the page-wide dot texture (body background) is kept in phase with
+   the scene's grid (syncDotPhase in the component), so the release into the
+   statement reads as one continuous field with no seam. */
+.gph-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 560px;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+.gph-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fallback headline when WebGL is unavailable. */
+.gph-h1-fallback {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 22vh;
+  margin: 0;
+  padding: 0 20px;
+  text-align: center;
+  font-size: clamp(40px, 8vw, 112px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.gph-copy {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Intro stagger: hidden until the scene is ready, then eased in. */
+.gph-fade {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 1s cubic-bezier(0.2, 0.9, 0.25, 1),
+    transform 1s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.gph-fade-d1 { transition-delay: 0.1s; }
+.gph-fade-d2 { transition-delay: 0.2s; }
+
+.gph-ready .gph-fade {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gph-eyebrow-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 9vh;
+  display: flex;
+  justify-content: center;
+}
+
+.gph-eyebrow {
+  display: inline-flex;
+  height: 30px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.gph-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.gph-bottom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px max(15vh, 104px);
+  text-align: center;
+}
+
+.gph-description {
+  margin: 0;
+  max-width: 600px;
+  font-size: 17px;
+  line-height: 25px;
+  letter-spacing: -0.02em;
+  color: var(--text-secondary);
+}
+
+/* CTAs reuse the site's own .hero-cta styles; the layer above is
+   pointer-events-none, so re-enable interaction here. */
+.gph-actions {
+  pointer-events: auto;
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gph-actions :focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+}

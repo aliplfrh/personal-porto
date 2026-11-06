@@ -12,14 +12,42 @@ test('home keeps the original hero above about, with footer outside main', () =>
   assert.ok(app.indexOf('<Footer') > app.indexOf('</main>'));
 });
 
-test('hero stays on the original bento layout rather than the halftone composition', () => {
+test('hero is the glass prism scene fed by admin content', () => {
   const hero = read('src/components/Hero.tsx');
-  assert.match(hero, /className="hero-grid"/);
-  assert.match(hero, /<WorldMap \/>/);
-  assert.match(hero, /<Clock \/>/);
-  assert.doesNotMatch(hero, /HalftoneWordmark|wordmark="alief"/);
-  for (const property of ['greeting', 'status', 'bio']) assert.ok(hero.includes(`content.hero.${property}`));
-  assert.match(hero, /content.resumeUrl/);
+  assert.match(hero, /<GlassPrismHero/);
+  assert.match(hero, /headline=\{content\.hero\.greeting\}/);
+  assert.match(hero, /eyebrow=\{content\.hero\.status\}/);
+  assert.match(hero, /description=\{content\.hero\.bio\}/);
+  assert.match(hero, /content\.resumeUrl/);
+  assert.doesNotMatch(hero, /WorldMap|Clock|HalftoneWordmark|hero-grid/);
+  const source = read('src/components/ui/glass-prism-hero.tsx');
+  // Plain WebGL — no 3D library was added for the scene.
+  assert.match(source, /getContext\("webgl"/);
+  assert.match(source, /prefers-reduced-motion/);
+  // No scroll hint and no stage fade: the handoff is a continuous dot field,
+  // phase-synced to the page background.
+  assert.doesNotMatch(source, /scrollHint|gph-hint|gph-wheel/);
+  assert.doesNotMatch(source, /stageRef\.current\.style\.opacity/);
+  assert.match(source, /--dot-phase-y/);
+  const gphCss = read('src/components/ui/glass-prism-hero.css');
+  assert.match(gphCss, /\.gph-stage/);
+  assert.doesNotMatch(gphCss, /gph-hint|gph-wheel/);
+  // The bento widgets are gone and the site texture is the hero's dot grid.
+  const css = read('src/index.css');
+  assert.match(css, /background-size: 20px 13px/);
+  assert.ok(!css.includes('64px 64px'), 'square grid background still present');
+  for (const dead of ['hero-grid', 'profile-widget', 'map-widget', 'tech-widget', 'code-widget', 'art-widget', 'badge-widget']) {
+    assert.ok(!css.includes(dead), `leftover hero-bento css: ${dead}`);
+  }
+  const pkg = JSON.parse(read('package.json'));
+  assert.doesNotMatch(JSON.stringify(pkg.dependencies), /three|regl|pixi/);
+});
+
+test('statement carries the intro copy for the hero handoff', () => {
+  const statement = read('src/components/Statement.tsx');
+  assert.ok(statement.includes('Im a visual artist based in Indonesia,'));
+  assert.ok(statement.includes('shaping cinematic edits and visual identities that carry feeling from first frame to last.'));
+  assert.doesNotMatch(statement, /Alief Lutfa'ul Ridho is a visual artist/);
 });
 
 test('footer retains aliplfrh and composes shared field without extra footer landmarks', () => {

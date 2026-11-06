@@ -82,10 +82,13 @@ body {
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-base);
-  background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-  background-size: 64px 64px;
+  /* The site-wide texture is the hero's own dot grid (20×13, same dot size and
+     brightness the WebGL scene draws). --dot-phase-y is synced from the prism
+     scene so the tiles continue the hero's field exactly at the sticky
+     release — hero, statement and everything below share one material. */
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0.45px, rgba(255, 255, 255, 0) 1.15px);
+  background-size: 20px 13px;
+  background-position: -6px var(--dot-phase-y, -1px);
   overflow-x: hidden;
 }
 
@@ -370,134 +373,10 @@ body.nav-open { overflow: hidden; }
 }
 
 /* ============================================================
-   Hero — widget grid
+   Hero — glass prism scene
+   The scene's styles live in src/components/ui/glass-prism-hero.css;
+   only the CTA buttons it reuses remain here.
    ============================================================ */
-.hero {
-  padding-top: var(--space-900);
-  min-height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--space-300);
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.widget {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  padding: var(--space-300);
-  transition: border-color 300ms var(--ease-base), transform 500ms var(--ease-base);
-}
-
-.widget:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-2px);
-}
-
-.profile-widget {
-  grid-column: span 12;
-  display: flex;
-  align-items: center;
-  gap: var(--space-300);
-  padding: var(--space-400);
-}
-
-.profile-avatar {
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  border: 2px solid var(--border-strong);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.profile-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-info { flex: 1; max-width: 680px; }
-
-.profile-greeting {
-  font-size: var(--text-3xl);
-  font-weight: 700;
-  margin-bottom: var(--space-100);
-}
-
-.profile-status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-75);
-  color: var(--success);
-  font-size: var(--text-xs);
-  background: rgba(16, 185, 129, 0.1);
-  padding: var(--space-50) var(--space-200);
-  border-radius: 999px;
-  margin-bottom: var(--space-200);
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--success);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.profile-bio {
-  color: var(--text-secondary);
-  font-size: var(--text-base);
-  margin-bottom: 0;
-}
-
-.profile-location {
-  display: flex;
-  align-items: center;
-  gap: var(--space-75);
-  color: var(--text-tertiary);
-  font-size: var(--text-xs);
-  margin-top: var(--space-200);
-}
-
-.profile-location img { width: 14px; height: auto; border-radius: 2px; }
-
-.social-links { display: flex; gap: var(--space-100); margin-top: var(--space-200); }
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--bg-surface-raised);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  transition: background 300ms var(--ease-base), border-color 300ms var(--ease-base), color 300ms var(--ease-base), transform 300ms var(--ease-base);
-}
-
-.social-link:hover {
-  background: var(--bg-surface-higher);
-  border-color: var(--border-strong);
-  color: var(--text-primary);
-  transform: translateY(-2px);
-}
-
-.social-link:active { transform: scale(0.96); }
 
 /* Hero actions — the direct path from the intro to the work */
 .hero-actions {
@@ -546,196 +425,6 @@ body.nav-open { overflow: hidden; }
 }
 
 .hero-cta:active { transform: scale(0.98); }
-
-.map-widget {
-  grid-column: span 8;
-  position: relative;
-  overflow: hidden;
-  min-height: 280px;
-  padding: 0;
-}
-
-.map-dotgrid {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
-  background-size: 22px 22px;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 45%, transparent 85%);
-  mask-image: radial-gradient(ellipse at center, #000 45%, transparent 85%);
-}
-
-.map-pin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.map-pin-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--text-primary);
-  box-shadow: 0 0 0 4px var(--bg-surface);
-}
-
-.map-pin-ring {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1.5px solid var(--text-primary);
-  animation: pin-ping 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-@keyframes pin-ping {
-  0% { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(6); opacity: 0; }
-}
-
-.map-location {
-  position: absolute;
-  left: var(--space-300);
-  bottom: var(--space-300);
-  display: flex;
-  align-items: center;
-  gap: var(--space-75);
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  padding: var(--space-75) var(--space-200);
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-}
-
-.map-location img { width: 16px; height: auto; border-radius: 2px; }
-
-.map-overlay {
-  position: absolute;
-  top: var(--space-300);
-  right: var(--space-300);
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  padding: var(--space-75) var(--space-200);
-  border-radius: 8px;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  font-family: var(--font-mono);
-}
-
-.tech-widget { grid-column: span 4; padding: var(--space-300); }
-/* Kept at the previous h3 size — only the heading level changed */
-.tech-widget h2 { font-size: clamp(var(--text-xl), 2vw, var(--text-2xl)); }
-
-.tech-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-100);
-  margin-top: var(--space-200);
-}
-
-.tech-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-75);
-  padding: var(--space-200);
-  background: var(--bg-surface-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  transition: background 300ms var(--ease-base), border-color 300ms var(--ease-base);
-}
-
-.tech-item:hover { background: var(--bg-surface-higher); border-color: var(--border-strong); }
-
-.tech-icon { width: 28px; height: 28px; opacity: 0.9; }
-.tech-name { font-size: var(--text-xs); color: var(--text-tertiary); text-align: center; }
-
-.code-widget { grid-column: span 6; padding: 0; overflow: hidden; }
-
-.code-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-75);
-  padding: var(--space-200) var(--space-300);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.code-dot { width: 11px; height: 11px; border-radius: 50%; }
-.code-dot.red { background: #ff5f56; }
-.code-dot.yellow { background: #ffbd2e; }
-.code-dot.green { background: #27c93f; }
-
-.code-content {
-  padding: var(--space-300);
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  line-height: 1.7;
-  background: var(--bg-surface-raised);
-}
-
-.code-line { color: var(--text-secondary); }
-.code-keyword { color: #ff79c6; }
-.code-string { color: #50fa7b; }
-.code-function { color: #8be9fd; }
-
-.art-widget {
-  grid-column: span 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 240px;
-}
-
-.art-image {
-  width: 112px;
-  height: 112px;
-  border-radius: 12px;
-  margin-bottom: var(--space-200);
-  background: var(--bg-surface-raised);
-  padding: var(--space-200);
-}
-
-.art-image img { width: 100%; height: 100%; object-fit: contain; }
-.art-label { font-size: var(--text-xs); color: var(--text-tertiary); margin-bottom: var(--space-200); }
-.art-controls { display: flex; gap: var(--space-100); }
-
-.art-btn {
-  background: var(--bg-surface-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition: background 300ms var(--ease-base), color 300ms var(--ease-base), transform 300ms var(--ease-base);
-}
-
-.art-btn:hover { background: var(--bg-surface-higher); color: var(--text-primary); }
-.art-btn:active { transform: scale(0.96); }
-
-.badge-widget {
-  grid-column: span 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 240px;
-  background: var(--bg-surface-raised);
-}
-
-.badge-letter {
-  font-size: var(--text-6xl);
-  font-weight: 700;
-  color: var(--text-primary);
-}
 
 /* ============================================================
    Statement — big tagline reveal (B11)
@@ -1122,15 +811,6 @@ body.nav-open { overflow: hidden; }
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width: 1200px) {
-  .hero-grid { grid-template-columns: repeat(8, 1fr); }
-  .map-widget { grid-column: span 8; }
-  .tech-widget { grid-column: span 8; }
-  .code-widget { grid-column: span 8; }
-  .art-widget { grid-column: span 4; }
-  .badge-widget { grid-column: span 4; }
-}
-
 @media (max-width: 860px) {
   .about-content { grid-template-columns: 1fr; gap: var(--space-400); }
 }
@@ -1140,17 +820,6 @@ body.nav-open { overflow: hidden; }
   .nav-link { display: none; }
   .mobile-menu-btn { display: flex; }
 
-  .hero { padding-top: var(--space-700); }
-  .hero-grid { grid-template-columns: 1fr; gap: var(--space-200); }
-
-  .profile-widget, .map-widget, .tech-widget, .code-widget, .art-widget, .badge-widget {
-    grid-column: span 1;
-  }
-
-  .profile-widget { flex-direction: column; text-align: center; padding: var(--space-300); }
-  .profile-info { max-width: 100%; }
-
-  .tech-grid { grid-template-columns: repeat(3, 1fr); }
   .tabs { flex-direction: column; align-items: stretch; }
   .timeline-item { padding-left: var(--space-700); }
   .projects-grid { grid-template-columns: 1fr; }
@@ -1160,8 +829,6 @@ body.nav-open { overflow: hidden; }
 
 @media (max-width: 480px) {
   .section { padding: var(--space-500) 0; }
-  .profile-greeting { font-size: var(--text-2xl); }
-  .tech-grid { grid-template-columns: repeat(2, 1fr); }
   .timeline::before { left: 20px; }
   .timeline-item { padding-left: var(--space-600); }
   .timeline-marker { left: 6px; width: 28px; height: 28px; }
@@ -1875,141 +1542,6 @@ body.nav-open { overflow: hidden; }
     scroll-behavior: auto !important;
   }
 }
-/* ============================================================
-   World map animations
-   ============================================================ */
-.world-map-svg {
-  width: 100%;
-  height: 100%;
-  color: var(--text-primary);
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.05));
-}
-
-.malang-marker {
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
-}
-
-.marker-ring {
-  fill: none;
-  stroke: var(--text-primary);
-  stroke-width: 1.5;
-  opacity: 0.6;
-  animation: marker-pulse 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-.marker-glow {
-  fill: none;
-  stroke: var(--text-primary);
-  stroke-width: 1;
-  opacity: 0.3;
-  animation: marker-glow-fade 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-.marker-dot {
-  fill: var(--text-primary);
-  animation: marker-blink 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-@keyframes marker-pulse {
-  0% {
-    r: 12px;
-    opacity: 0.8;
-  }
-  100% {
-    r: 28px;
-    opacity: 0;
-  }
-}
-
-@keyframes marker-glow-fade {
-  0%, 100% {
-    opacity: 0.2;
-    r: 8px;
-  }
-  50% {
-    opacity: 0.5;
-    r: 12px;
-  }
-}
-
-@keyframes marker-blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-/* ============================================================
-   Enhanced widget hover (depth + shadow)
-   ============================================================ */
-.widget {
-  transition: 
-    border-color 300ms var(--ease-base),
-    transform 500ms var(--ease-base),
-    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.widget:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
-}
-
-.widget:active {
-  transform: translateY(-2px);
-}
-
-/* ============================================================
-   Social links — enhanced hover
-   ============================================================ */
-.social-link {
-  transition: 
-    background 300ms var(--ease-base),
-    border-color 300ms var(--ease-base),
-    color 300ms var(--ease-base),
-    transform 300ms var(--ease-base),
-    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-.social-link:hover {
-  background: var(--bg-surface-higher);
-  border-color: var(--border-strong);
-  color: var(--text-primary);
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.social-link:active {
-  transform: translateY(-1px) scale(0.96);
-}
-
-/* ============================================================
-   Tech items — smooth scale on hover
-   ============================================================ */
-.tech-item {
-  transition: 
-    background 300ms var(--ease-base),
-    border-color 300ms var(--ease-base),
-    transform 500ms var(--ease-base);
-}
-
-.tech-item:hover {
-  background: var(--bg-surface-higher);
-  border-color: var(--border-strong);
-  transform: translateY(-3px);
-}
-
-.tech-icon {
-  transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1), transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tech-item:hover .tech-icon {
-  opacity: 1;
-  transform: scale(1.08);
-}
 
 /* ============================================================
    Buttons — consistent interaction
@@ -2051,76 +1583,6 @@ button:active:not(:disabled) {
 }
 
 /* ============================================================
-   Art controls — smooth interactions
-   ============================================================ */
-.art-btn {
-  transition: 
-    background 300ms var(--ease-base),
-    color 300ms var(--ease-base),
-    transform 300ms var(--ease-base),
-    box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.art-btn:hover {
-  background: var(--bg-surface-higher);
-  color: var(--text-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.art-btn:active {
-  transform: scale(0.96);
-}
-
-/* ============================================================
-   Map widget — improved spacing
-   ============================================================ */
-.map-widget {
-  position: relative;
-  overflow: hidden;
-  min-height: 280px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.map-location {
-  position: absolute;
-  left: var(--space-300);
-  bottom: var(--space-300);
-  display: flex;
-  align-items: center;
-  gap: var(--space-75);
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  padding: var(--space-75) var(--space-200);
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  transition: all 300ms var(--ease-base);
-}
-
-.map-location:hover {
-  background: rgba(0, 0, 0, 0.75);
-  border-color: var(--border-strong);
-}
-
-.map-overlay {
-  position: absolute;
-  top: var(--space-300);
-  right: var(--space-300);
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  padding: var(--space-75) var(--space-200);
-  border-radius: 8px;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  font-family: var(--font-mono);
-  border: 1px solid var(--border-subtle);
-}
-
-/* ============================================================
    Reduced motion support
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -2130,121 +1592,6 @@ button:active:not(:disabled) {
     transition-duration: 0.01ms !important;
   }
 }
-/* Real world map */
-.map-widget {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding: 0;
-  min-height: 320px;
-  background: #151515;
-}
-
-.map-widget .world-map-svg {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: 32px 14px;
-  filter: none;
-  pointer-events: none;
-}
-
-.world-map-land {
-  fill: #303030;
-  stroke: #626262;
-  stroke-width: 0.65;
-  stroke-linejoin: round;
-}
-
-.location-halo {
-  fill: rgba(255, 255, 255, 0.06);
-  stroke: rgba(255, 255, 255, 0.12);
-  stroke-width: 1;
-}
-
-.location-pulse {
-  fill: none;
-  stroke: #ffffff;
-  stroke-width: 1.4;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: malang-location-pulse 2.8s ease-out infinite;
-}
-
-.location-dot {
-  fill: #ffffff;
-  stroke: #151515;
-  stroke-width: 1.5;
-  animation: malang-location-blink 2.8s ease-in-out infinite;
-}
-
-@keyframes malang-location-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.75;
-  }
-  85%, 100% {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-@keyframes malang-location-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
-}
-
-.map-widget .map-location,
-.map-widget .map-overlay {
-  z-index: 2;
-}
-
-.map-overlay {
-  font-variant-numeric: tabular-nums;
-}
-
-.map-load-message {
-  position: absolute;
-  left: 24px;
-  top: 24px;
-  max-width: 50%;
-  color: #a3a3a3;
-  font-size: 12px;
-}
-
-@media (max-width: 768px) {
-  .map-widget {
-    min-height: 260px;
-  }
-
-  .map-widget .world-map-svg {
-    padding: 36px 8px;
-  }
-
-  .map-widget .map-location {
-    left: 16px;
-    bottom: 16px;
-  }
-
-  .map-widget .map-overlay {
-    top: 16px;
-    right: 16px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .location-pulse,
-  .location-dot {
-    animation: none;
-  }
-
-  .location-pulse {
-    opacity: 0.35;
-  }
-}
-
 /* ============================================================
    Scroll progress rail
    A 1px hairline that fills with the document. Reading position at a
@@ -2271,28 +1618,6 @@ button:active:not(:disabled) {
 }
 
 /* ============================================================
-   Hero entrance — staggered cascade
-   The widgets rise in sequence instead of appearing all at once. Uses
-   `backwards` fill only: a `forwards`/`both` fill would keep the final
-   transform locked and break .widget:hover, which also animates transform.
-   ============================================================ */
-.hero-grid > .widget {
-  animation: hero-widget-in 620ms var(--ease-base) backwards;
-}
-
-.hero-grid > .widget:nth-child(1) { animation-delay: 40ms; }
-.hero-grid > .widget:nth-child(2) { animation-delay: 130ms; }
-.hero-grid > .widget:nth-child(3) { animation-delay: 220ms; }
-.hero-grid > .widget:nth-child(4) { animation-delay: 310ms; }
-.hero-grid > .widget:nth-child(5) { animation-delay: 400ms; }
-.hero-grid > .widget:nth-child(6) { animation-delay: 490ms; }
-
-@keyframes hero-widget-in {
-  from { opacity: 0; transform: translateY(22px); }
-  to { opacity: 1; transform: none; }
-}
-
-/* ============================================================
    Scroll-linked parallax — decorative layers only, never text.
    Amplitudes stay small; the surrounding overflow:hidden frames absorb
    the shift so no edge is ever exposed.
@@ -2311,10 +1636,6 @@ button:active:not(:disabled) {
    Reveal/Statement already short-circuit in JS; these cover the CSS paths.
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  .hero-grid > .widget {
-    animation: none;
-  }
-
   .scroll-progress-bar {
     transform: scaleX(1);
     background: rgba(255, 255, 255, 0.12);

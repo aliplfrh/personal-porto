@@ -1,210 +1,43 @@
-import React, { useState } from 'react';
-import { Github, Linkedin, Youtube, Instagram, FileText, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowUpRight, FileText } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
-import WorldMap from './WorldMap';
-import Clock from './Clock';
+import GlassPrismHero from './ui/glass-prism-hero';
 
+/**
+ * The hero is a full-viewport glass-prism scene: a beam of light refracts
+ * through a WebGL prism over the visitor's dot grid. Everything it says comes
+ * from the admin-editable hero content, and the CTAs reuse the site's own
+ * monochrome button styles. Scrolling turns the prism and dims the light, so
+ * the page hands off seamlessly to the intro statement below.
+ */
 const Hero: React.FC = () => {
   const { content } = useSiteContent();
-  const [currentArt, setCurrentArt] = useState(0);
-
-  const artworks = [
-    'https://i.imgur.com/pxSB012.png',
-    'https://i.imgur.com/bR28g7Z.png',
-    'https://upload.wikimedia.org/wikipedia/commons/b/bb/Logo_Universitas_Brawijaya.svg'
-  ];
-
-  const nextArt = () => {
-    setCurrentArt((prev) => (prev + 1) % artworks.length);
-  };
-
-  const prevArt = () => {
-    setCurrentArt((prev) => (prev - 1 + artworks.length) % artworks.length);
-  };
 
   return (
-    <div className="hero">
-      <div className="container">
-        <div className="hero-grid">
-          <div className="profile-widget widget">
-            <div className="profile-avatar">
-              <img
-                src="https://i.imgur.com/K35klRx.jpeg"
-                alt="Alief Lutfa'ul Ridho"
-              />
-            </div>
-            <div className="profile-info">
-              <h1 className="profile-greeting gradient-heading">{content.hero.greeting}</h1>
-              <div className="profile-status">
-                <span className="status-dot"></span>
-                {content.hero.status}
-              </div>
-              <p className="profile-bio">
-                {content.hero.bio}
-              </p>
-              <div className="profile-location">
-                <span>Based in</span>
-                <img
-                  src="https://flagcdn.com/id.svg"
-                  alt="Indonesia flag"
-                />
-                <span>Indonesia</span>
-              </div>
-              <div className="hero-actions">
-                <Link to="/portofolio" className="hero-cta hero-cta-primary">
-                  View works
-                  <ArrowUpRight size={16} />
-                </Link>
-                <a
-                  href={content.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hero-cta hero-cta-secondary"
-                >
-                  Resume
-                  <FileText size={16} />
-                </a>
-              </div>
-              <div className="social-links">
-                <a
-                  href="https://github.com/aliplfrh"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  aria-label="GitHub"
-                >
-                  <Github size={18} />
-                </a>
-                <a
-                  href="https://linkedin.com/in/aliplfrh"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={18} />
-                </a>
-                <a
-                  href="https://youtube.com/@aliplfrh"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  aria-label="YouTube"
-                >
-                  <Youtube size={18} />
-                </a>
-                <a
-                  href="https://instagram.com/aliplfrh"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  aria-label="Instagram"
-                >
-                  <Instagram size={18} />
-                </a>
-                <a
-                  href="/cv.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-link"
-                  aria-label="Resume"
-                >
-                  <FileText size={18} />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="map-widget widget">
-            <WorldMap />
-            <div className="map-location">
-              <img src="https://flagcdn.com/id.svg" alt="" />
-              <span>Malang, Indonesia</span>
-            </div>
-            <Clock />
-          </div>
-
-          <div className="tech-widget widget">
-            <h2>Tech Stack</h2>
-            <div className="tech-grid">
-              <div className="tech-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg" alt="After Effects" className="tech-icon" />
-                <span className="tech-name">After Effects</span>
-              </div>
-              <div className="tech-item">
-                <img src="https://www.adobe.com/content/dam/cc/icons/premiere.svg" alt="Premiere Pro" className="tech-icon" />
-                <span className="tech-name">Premiere Pro</span>
-              </div>
-              <div className="tech-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/DaVinci_Resolve_17_logo.svg" alt="DaVinci Resolve" className="tech-icon" />
-                <span className="tech-name">DaVinci Resolve</span>
-              </div>
-              <div className="tech-item">
-                <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/svg/adobe-photoshop.svg" alt="Photoshop" className="tech-icon" />
-                <span className="tech-name">Photoshop</span>
-              </div>
-              <div className="tech-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg" alt="Figma" className="tech-icon" />
-                <span className="tech-name">Figma</span>
-              </div>
-              <div className="tech-item">
-                <img src="https://upload.wikimedia.org/wikipedia/en/a/a0/Capcut-logo.svg" alt="CapCut" className="tech-icon" />
-                <span className="tech-name">CapCut</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="code-widget widget">
-            <div className="code-header">
-              <span className="code-dot red"></span>
-              <span className="code-dot yellow"></span>
-              <span className="code-dot green"></span>
-            </div>
-            <div className="code-content">
-              <div className="code-line">
-                <span className="code-keyword">const</span> <span className="code-function">passion</span> = <span className="code-string">"I like to make things"</span>;
-              </div>
-              <div className="code-line" style={{ marginTop: '0.5rem' }}>
-                <span className="code-keyword">function</span> <span className="code-function">create</span>() {'{'}
-              </div>
-              <div className="code-line" style={{ paddingLeft: '1.5rem' }}>
-                <span className="code-keyword">return</span> <span className="code-string">"Cinematic experiences"</span>;
-              </div>
-              <div className="code-line">
-                {'}'}
-              </div>
-            </div>
-          </div>
-
-          <div className="art-widget widget">
-            <div
-              className="art-image"
-              role="group"
-              aria-roledescription="carousel"
-              aria-label="Selected artwork"
-            >
-              <img src={artworks[currentArt]} alt={`Artwork ${currentArt + 1} of ${artworks.length} by aliplfrh`} />
-            </div>
-            <p className="art-label" aria-live="polite">
-              {`by: aliplfrh — ${currentArt + 1}/${artworks.length}`}
-            </p>
-            <div className="art-controls">
-              <button className="art-btn" onClick={prevArt} aria-label="Previous artwork">
-                <ChevronLeft size={18} />
-              </button>
-              <button className="art-btn" onClick={nextArt} aria-label="Next artwork">
-                <ChevronRight size={18} />
-              </button>
-            </div>
-          </div>
-
-          <div className="badge-widget widget">
-            <div className="badge-letter">A</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <GlassPrismHero
+      headline={content.hero.greeting}
+      eyebrow={content.hero.status}
+      description={content.hero.bio}
+      accent="#ffffff"
+      actions={
+        <>
+          <Link to="/portofolio" className="hero-cta hero-cta-primary">
+            View works
+            <ArrowUpRight size={16} />
+          </Link>
+          <a
+            href={content.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hero-cta hero-cta-secondary"
+          >
+            Resume
+            <FileText size={16} />
+          </a>
+        </>
+      }
+    />
   );
 };
 

@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 const lines = [
-  "Alief Lutfa'ul Ridho is a visual artist based in Indonesia,",
+  'Im a visual artist based in Indonesia,',
   'shaping cinematic edits and visual identities that carry feeling from first frame to last.',
 ];
 
