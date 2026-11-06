@@ -1,0 +1,148 @@
+/* Blurred logo marquee — adapted from the registry component to this codebase's
+   plain-CSS monochrome system (no Tailwind). */
+
+.bm-root {
+  position: relative;
+  padding: 26px 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 22%,
+    rgba(255, 255, 255, 0) 78%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .bm-root {
+    border-inline: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  }
+}
+
+.bm-slider {
+  overflow: hidden;
+}
+
+/* Second row sits directly under the first with a small breathing gap. */
+.bm-slider + .bm-slider {
+  margin-top: 12px;
+}
+
+.bm-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  will-change: transform;
+}
+
+/* One repeat unit (a full copy of the tool set). Cloned by the slider until
+   the row overflows, so no empty space can appear at either edge. */
+.bm-unit {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.bm-logo {
+  height: 16px;
+  width: auto;
+  object-fit: contain;
+  /* Monochrome treatment: invert dark, light-background logo art so it reads on
+     the black card while keeping each mark's internal contrast. */
+  filter: grayscale(1) invert(1);
+  opacity: 0.75;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bm-logo {
+    height: 20px;
+  }
+}
+
+.bm-logo-text {
+  color: var(--text-secondary, #a3a3a3);
+  font: 500 13px/1 var(--font-mono, 'Geist Mono', monospace);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.bm-blur {
+  position: relative;
+}
+
+.bm-blur-edge {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: clamp(72px, 22%, 160px);
+  pointer-events: none;
+}
+
+.bm-blur-left {
+  left: 0;
+}
+
+.bm-blur-right {
+  right: 0;
+}
+
+.bm-blur-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Full-bleed hairlines; body already clips horizontal overflow. */
+.bm-rule {
+  position: absolute;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.bm-rule-top {
+  top: 0;
+  border-top: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+}
+
+.bm-rule-bottom {
+  bottom: 0;
+  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+}
+
+.bm-plus {
+  position: absolute;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  color: var(--text-tertiary, #8a8a8a);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .bm-plus {
+    display: block;
+  }
+}
+
+.bm-plus-tr {
+  top: -12px;
+  right: -12px;
+}
+
+.bm-plus-bl {
+  bottom: -12px;
+  left: -12px;
+}
+
+@media (max-width: 767px) {
+  .bm-root {
+    padding: 20px 0;
+  }
+}

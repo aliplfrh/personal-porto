@@ -3,6 +3,7 @@ import { GraduationCap, MapPin } from 'lucide-react';
 import { useSiteContent } from '../content/SiteContentContext';
 import { ExperienceEntry } from '../content/types';
 import Reveal from '../components/Reveal';
+import BlurredMarquee from '@/components/ui/blurred-marquee';
 import '../components/ProfileSections.css';
 
 // Up to two letters from the entry name, used as a monochrome watermark until a
@@ -110,6 +111,13 @@ const About: React.FC = () => {
               </div>
             ))}
           </dl>
+        </Reveal>
+
+        <Reveal>
+          <BlurredMarquee
+            className="prf-tools-marquee"
+            logos={content.tools.map((tool) => ({ src: tool.iconUrl, alt: tool.name }))}
+          />
         </Reveal>
 
         <Reveal>

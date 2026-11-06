@@ -236,6 +236,12 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Creative-tools marquee sits between the stats row and the history heading;
+   the stats row already provides the space above it. */
+.prf-tools-marquee {
+  margin: 0 0 40px;
+}
+
 .prf-history-section-heading {
   margin: 0 0 32px;
   font-size: clamp(24px, 3vw, 32px);
