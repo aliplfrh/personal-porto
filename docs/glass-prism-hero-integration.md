@@ -69,6 +69,13 @@ slides up and away while the dot field continues unbroken into the statement
 ("Im a visual artist based in Indonesia…"), which brightens word by word as it
 rises. No fade, no crop, no seam; no scroll is hijacked.
 
+The statement itself is a portrait card (adapted from the testimonials-2
+registry layout, plain CSS): the artist's photo dissolves into the
+background under a radial ellipse mask, framed by masked hairlines, with
+the tagline beside it and a name/role attribution below. On desktop the
+portrait stretches to the full height of the text block; the card is
+1160px wide so the tagline keeps a comfortable measure.
+
 ## Accessibility & motion
 
 - `prefers-reduced-motion`: the intro animation, light flicker and source drift

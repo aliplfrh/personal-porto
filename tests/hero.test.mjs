@@ -48,6 +48,13 @@ test('statement carries the intro copy for the hero handoff', () => {
   assert.ok(statement.includes('Im a visual artist based in Indonesia,'));
   assert.ok(statement.includes('shaping cinematic edits and visual identities that carry feeling from first frame to last.'));
   assert.doesNotMatch(statement, /Alief Lutfa'ul Ridho is a visual artist/);
+  // Portrait card: the artist's photo framed by masked hairlines.
+  assert.match(statement, /i\.imgur\.com\/K35klRx\.jpeg/);
+  assert.match(statement, /statement-portrait/);
+  const css = read('src/index.css');
+  assert.match(css, /statement-line-v/);
+  assert.match(css, /radial-gradient\(ellipse closest-side, #000 60%, transparent 100%\)/);
+  assert.match(css, /align-self: stretch/);
 });
 
 test('footer retains aliplfrh and composes shared field without extra footer landmarks', () => {

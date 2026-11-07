@@ -427,28 +427,158 @@ body.nav-open { overflow: hidden; }
 .hero-cta:active { transform: scale(0.98); }
 
 /* ============================================================
-   Statement — big tagline reveal (B11)
+   Statement — portrait + tagline (adapted testimonials layout:
+   photo framed by masked hairlines, tagline beside it)
    ============================================================ */
 .statement {
   padding: var(--space-900) 0;
 }
 
-.statement-text {
-  max-width: 680px;
+.statement-card {
   margin: 0 auto;
+  width: 100%;
+  max-width: 1160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-400);
+}
+
+.statement-portrait {
+  position: relative;
+  flex-shrink: 0;
+  width: 128px;
+  height: 128px;
+}
+
+/* The photo dissolves into the background with a radial mask (closest-side
+   so every edge fully fades, not just the corners); the hairlines fade at
+   their tips so the frame never ends abruptly. On desktop the portrait
+   stretches to the full height of the text beside it. */
+.statement-avatar {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: radial-gradient(ellipse closest-side, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse closest-side, #000 60%, transparent 100%);
+}
+
+.statement-avatar img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.statement-avatar-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-5xl);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+.statement-line {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.statement-line-v {
+  top: -50%;
+  bottom: -50%;
+  width: 1px;
+  height: auto;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 70%, transparent 100%);
+}
+
+.statement-line-left { left: 0; }
+.statement-line-right { right: 0; }
+
+.statement-line-h {
+  left: -32%;
+  width: 164%;
+  height: 1px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 25%, #000 75%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 25%, #000 75%, transparent 100%);
+}
+
+.statement-line-top { top: 0; }
+.statement-line-bottom { bottom: 0; }
+
+.statement-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-400);
+  text-align: center;
+}
+
+.statement-text {
+  margin: 0;
   font-size: clamp(var(--text-4xl), 5vw, var(--text-6xl));
   font-weight: 600;
   line-height: 1.25;
-  text-align: left;
+  letter-spacing: -0.02em;
 }
 
 .statement-word {
   color: rgba(255, 255, 255, 0.28);
-  transition: color 700ms var(--ease-base);
 }
 
-.statement-word.visible {
+.statement-cite {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-50);
+}
+
+.statement-name {
+  font-size: var(--text-xs);
+  font-weight: 600;
   color: var(--text-primary);
+}
+
+.statement-role {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+@media (min-width: 1024px) {
+  .statement-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-600);
+    align-items: center;
+  }
+
+  /* The portrait grows to exactly the height of the text block beside it
+     (align-self: stretch against the row the text defines). Its width must
+     stay viewport-relative — a percentage here would be cyclic inside the
+     `auto` track (the track would size from the image's natural width and
+     squeeze the text into a runaway column). */
+  .statement-portrait {
+    align-self: stretch;
+    width: clamp(300px, 28vw, 420px);
+    height: auto;
+  }
+
+  .statement-body {
+    align-items: flex-start;
+    text-align: left;
+  }
 }
 
 /* ============================================================
@@ -824,7 +954,6 @@ body.nav-open { overflow: hidden; }
   .timeline-item { padding-left: var(--space-700); }
   .projects-grid { grid-template-columns: 1fr; }
   .portfolio-filters { flex-direction: column; align-items: stretch; }
-  .statement-text { text-align: left; }
 }
 
 @media (max-width: 480px) {
